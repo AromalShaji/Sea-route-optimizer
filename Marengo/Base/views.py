@@ -6,3 +6,15 @@ from django.shortcuts import render
 
 def home(request):
     return render(request,'home/index.html')
+
+#====================================================================================
+#----------------------------------------signin page----------------------------------------
+
+def signinPage(request):
+    return render(request,'signin.html')
+
+#====================================================================================
+#----------------------------------------signup page----------------------------------------
+
+def signupPage(request):
+    return render(request,'signup.html')

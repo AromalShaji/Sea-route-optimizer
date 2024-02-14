@@ -9,4 +9,6 @@ urlpatterns = [
     #------------------------------------------------------------------------------------------------------
     #home
     path('', home, name='home'),
+    path('/signinPage', signinPage, name='signinPage'),
+    path('/signupPage', signupPage, name='signupPage'),
 ]
