@@ -3,10 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Registration</title>
     <style>
       body {
-        background-color: white;
+        background-image: url("static/images/hero_bg_1.jpg");
+        background-size: cover;
+        background-position: center;
       }
 
       #loginbox {
@@ -15,6 +17,10 @@
 
       #loginbox > div:first-child {
         padding-bottom: 10px;
+      }
+
+      .panel {
+        background-color: transparent;
       }
 
       .iconmelon {
@@ -31,13 +37,8 @@
         margin-bottom: 10px;
       }
 
-      .panel {
-        background-color: transparent;
-      }
-
       .panel-body {
         padding-top: 30px;
-        background-color: rgba(2555, 255, 255, 0.3);
       }
 
       #particles {
@@ -370,8 +371,8 @@
             directionX: "center",
             directionY: "center",
             density: 1e4,
-            dotColor: "#666666",
-            lineColor: "#666666",
+            dotColor: "#FFFFFF",
+            lineColor: "#FFFFFF",
             particleRadius: 7,
             lineWidth: 1,
             curvedLines: !1,
@@ -422,8 +423,8 @@
           directionX: "center", // 'center', 'left' or 'right'. 'center' = dots bounce off edges
           directionY: "center", // 'center', 'up' or 'down'. 'center' = dots bounce off edges
           density: 10000, // How many particles will be generated: one particle every n pixels
-          dotColor: "#476ab5",
-          lineColor: "#476ab5",
+          dotColor: "#FFFFFF",
+          lineColor: "#FFFFFF",
           particleRadius: 7, // Dot size
           lineWidth: 1,
           curvedLines: true,
@@ -449,8 +450,20 @@
           </div>
         </div>
 
-        <div class="panel panel-default">
-          <div class="panel-heading">
+        <div
+          class="panel panel-default"
+          style="
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 20px;
+          "
+        >
+          <div
+            class="panel-heading"
+            style="
+              background-color: rgba(255, 255, 255, 0.5);
+              border-radius: 20px;
+            "
+          >
             <div class="panel-title text-center">Create New Account</div>
           </div>
 
@@ -500,7 +513,6 @@
                 </select>
               </div>
 
-
               <div class="input-group">
                 <span class="input-group-addon"
                   ><i class="glyphicon glyphicon-lock"></i
@@ -517,7 +529,9 @@
               <div class="form-group">
                 <!-- Button -->
                 <div class="col-sm-12 controls">
-                  <a class="text-success" href="{% url 'signinPage' %}">Already have an Account</a>
+                  <a class="text-primary" href="{% url 'signinPage' %}"
+                    >Already have an Account</a
+                  >
                   <button
                     type="submit"
                     href="#"
@@ -534,7 +548,5 @@
     </div>
 
     <div id="particles"></div>
-
-    
   </body>
 </html>

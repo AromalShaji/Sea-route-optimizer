@@ -10,7 +10,8 @@ from django.views.decorators.cache import cache_control
 def home(request):
     today = datetime.datetime.now().date()
     if 'id' in request.session:
-        return render(request, 'home/index.html', {'id': id, 'dis': dis, 'user_type' : user_type})    
+        id=request.session['id']
+        return render(request, 'home/index.html', {'id': id, 'userDeatils': dis, 'userType' : userType})    
     return render(request,'home/index.html')
 
 #====================================================================================

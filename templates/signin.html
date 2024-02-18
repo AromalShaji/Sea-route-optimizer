@@ -3,10 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Login</title>
     <style>
       body {
-        background-color: white;
+        background-image: url("static/images/hero_bg_1.jpg");
+        background-size: cover;
+        background-position: center;
       }
 
       #loginbox {
@@ -81,6 +83,95 @@
     />
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+    <!------ Include the above in your HEAD tag ---------->
+
+    <div class="container">
+      <div
+        id="loginbox"
+        class="mainbox col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3"
+      >
+        <div class="row">
+          <div class="iconmelon">
+            <svg viewBox="0 0 32 32">
+              <g filter="">
+                <use xlink:href="#git"></use>
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        <div
+          class="panel panel-default"
+          style="
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 20px;
+          "
+        >
+          <div
+            class="panel-heading"
+            style="
+              background-color: rgba(255, 255, 255, 0.5);
+              border-radius: 20px;
+            "
+          >
+            <div class="panel-title text-center">LOGIN</div>
+          </div>
+
+          <div class="panel-body">
+            <form
+              name="form"
+              id="form"
+              class="form-horizontal"
+              enctype="multipart/form-data"
+              method="POST"
+            >
+              <div class="input-group">
+                <span class="input-group-addon"
+                  ><i class="glyphicon glyphicon-envelope"></i
+                ></span>
+                <input
+                  id="user"
+                  type="text"
+                  class="form-control"
+                  name="email"
+                  placeholder="Email"
+                />
+              </div>
+
+              <div class="input-group">
+                <span class="input-group-addon"
+                  ><i class="glyphicon glyphicon-lock"></i
+                ></span>
+                <input
+                  id="password"
+                  type="password"
+                  class="form-control"
+                  name="password"
+                  placeholder="Password"
+                />
+              </div>
+
+              <div class="form-group">
+                <!-- Button -->
+                <div class="col-sm-12 controls">
+                  <a class="text-primary" href="{% url 'signupPage' %}"
+                    >Already have an Account</a
+                  >
+                  <button
+                    type="submit"
+                    href="#"
+                    class="btn btn-primary pull-right"
+                  >
+                    <i class="glyphicon glyphicon-log-in"></i> Submit
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
     <script>
       !(function (a) {
         function b(b, d) {
@@ -370,8 +461,8 @@
             directionX: "center",
             directionY: "center",
             density: 1e4,
-            dotColor: "#666666",
-            lineColor: "#666666",
+            dotColor: "#FFFFFF",
+            lineColor: "#FFFFFF",
             particleRadius: 7,
             lineWidth: 1,
             curvedLines: !1,
@@ -422,8 +513,8 @@
           directionX: "center", // 'center', 'left' or 'right'. 'center' = dots bounce off edges
           directionY: "center", // 'center', 'up' or 'down'. 'center' = dots bounce off edges
           density: 10000, // How many particles will be generated: one particle every n pixels
-          dotColor: "#476ab5",
-          lineColor: "476ab5",
+          dotColor: "#FFFFFF",
+          lineColor: "#FFFFFF",
           particleRadius: 7, // Dot size
           lineWidth: 1,
           curvedLines: true,
@@ -432,85 +523,6 @@
         });
       });
     </script>
-    <!------ Include the above in your HEAD tag ---------->
-
-    <div class="container">
-      <div
-        id="loginbox"
-        class="mainbox col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3"
-      >
-        <div class="row">
-          <div class="iconmelon">
-            <svg viewBox="0 0 32 32">
-              <g filter="">
-                <use xlink:href="#git"></use>
-              </g>
-            </svg>
-          </div>
-        </div>
-
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <div class="panel-title text-center">Login</div>
-          </div>
-
-          <div class="panel-body">
-            <form
-              name="form"
-              id="form"
-              class="form-horizontal"
-              enctype="multipart/form-data"
-              method="POST"
-            >
-              <div class="input-group">
-                <span class="input-group-addon"
-                  ><i class="glyphicon glyphicon-envelope"></i
-                ></span>
-                <input
-                  id="email"
-                  type="text"
-                  class="form-control"
-                  name="email"
-                  value=""
-                  placeholder="Email"
-                />
-              </div>
-              
-
-              <div class="input-group">
-                <span class="input-group-addon"
-                  ><i class="glyphicon glyphicon-lock"></i
-                ></span>
-                <input
-                  id="password"
-                  type="password"
-                  class="form-control"
-                  name="password"
-                  placeholder="Password"
-                />
-              </div>
-
-              <div class="form-group">
-                <!-- Button -->
-                <div class="col-sm-12 controls">
-                  <a class="text-danger" href="{% url 'signupPage' %}">Don't have an Account</a>
-                  <button
-                    type="submit"
-                    href="#"
-                    class="btn btn-primary pull-right"
-                  >
-                    <i class="glyphicon glyphicon-log-in"></i> Log in
-                  </button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <div id="particles"></div>
-
-    
   </body>
 </html>
