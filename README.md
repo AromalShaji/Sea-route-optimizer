@@ -21,7 +21,7 @@
 
 ## 📫 How to Reach Me
 
-Feel free to reach out to me through [email@example.com](mailto:email@example.com) or connect with me on [LinkedIn](https://www.linkedin.com/in/your-profile/).
+Feel free to reach out to me through [email@example.com](mailto:aromalpshaji10@example.com) or connect with me on [LinkedIn](https://www.linkedin.com/in/aromal-shaji-887123226/).
 
 ## 📝 License
 
