@@ -43,12 +43,15 @@
               <li class="has-children">
                 <a href="\">USER NAME</a>
                 <ul class="dropdown">
-                  <li class="has-children">
-                    <a href="{% url 'signinPage' %}">LOGIN</a>
+                  {% if 'id' in request.session %}
+                  <li class="">
+                    <a href=""><b>LOGOUT</b></a>
                   </li>
-                  <li class="has-children">
-                    <a href="{% url 'signupPage' %}">REGISTRATION</a>
+                  {% else %}
+                  <li class="">
+                    <a href="{% url 'signupPage' %}"><b>LOGIN</b></a>
                   </li>
+                  {% endif %}
                 </ul>
               </li>
             </ul>

@@ -11,8 +11,8 @@ def home(request):
     today = datetime.datetime.now().date()
     if 'id' in request.session:
         id=request.session['id']
-        return render(request, 'home/index.html', {'id': id, 'userDeatils': dis, 'userType' : userType})    
-    return render(request,'home/index.html')
+        return render(request, 'Admin/index.html', {'id': id, 'userDeatils': dis, 'userType' : userType})    
+    return render(request,'Admin/index.html')
 
 #====================================================================================
 #----------------------------------------signin page----------------------------------------
@@ -24,4 +24,11 @@ def signinPage(request):
 #----------------------------------------signup page----------------------------------------
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def signupPage(request):
-    return render(request,'signup.html')
+    return render(request,'signin.html')
+
+
+#====================================================================================
+#----------------------------------------Admin registration page----------------------------------------
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def adminSignupPage(request):
+    return render(request,'Admin/adminRegistration.html')
