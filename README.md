@@ -1,12 +1,3 @@
-# Hello, I'm Your Name! 👋
-
-I'm a Django Python developer passionate about building web applications. Welcome to my GitHub profile!
-
-## 🚀 About Me
-
-- 🌱 I’m currently learning and improving my Django skills.
-- 👯 I’m looking to collaborate on open-source Django projects.
-- 💬 Ask me about Django, Python, or anything related to web development.
 
 ## 🛠️ Technologies & Tools
 
