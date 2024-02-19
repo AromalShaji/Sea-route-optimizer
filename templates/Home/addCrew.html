@@ -5,23 +5,21 @@
 {% block content%}
 
 {% include 'nav.html' %}
-
 {% if messages %}
-<ul class="messages">
-  {% for message in messages %}
-  <li class="{{ message.tags }}">
-    <span class="message-text">{{ message }}</span>
-    <button class="close-btn">&times;</button>
-  </li>
-  {% endfor %}
-</ul>
+  <ul class="messages">
+    {% for message in messages %}
+    <li class="{{ message.tags }}">
+      <span class="message-text {% if message.tags == 'error' %}error{% endif %}">{{ message }}</span>
+      <button class="close-btn">&times;</button>
+    </li>
+    {% endfor %}
+  </ul>
 {% endif %}
-
 <script>
-  const closeButtons = document.querySelectorAll(".close-btn");
+  const closeButtons = document.querySelectorAll('.close-btn');
 
-  closeButtons.forEach((button) => {
-    button.addEventListener("click", () => {
+  closeButtons.forEach(button => {
+    button.addEventListener('click', () => {
       const message = button.parentElement;
       message.remove();
     });
@@ -46,6 +44,13 @@
     color: #000000;
     padding: 10px;
     position: relative;
+    text-align: center; /* Center the message */
+  }
+
+  .messages li.error {
+    background-color: #f44336; /* Red background for error messages */
+    border-color: #d32f2f;
+    color: white; /* White text for error messages */
   }
 
   .messages li .close-btn {
@@ -69,6 +74,7 @@
     max-width: 90%;
   }
 </style>
+
 
 <div class="site-blocks-cover overlay" style="background-image: url(static/images/hero_bg_3.jpg)" data-aos="fade"
   data-stellar-background-ratio="0.5">
