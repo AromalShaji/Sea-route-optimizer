@@ -44,7 +44,6 @@ class Port(models.Model):
 
 class Ship(models.Model):
     name = models.CharField(max_length=100)
-    location = models.CharField(max_length=50, default='')
     phone = models.CharField(max_length=15, default='')
     source = models.CharField(max_length=150, default='')
     destination = models.CharField(max_length=150, default='')
@@ -53,4 +52,4 @@ class Ship(models.Model):
     added_user = models.CharField(max_length=50, default='')
 
     def __str__(self):
-        return self.name + " : " + str(self.location)+ " : " + str(self.status)
+        return self.name + " : " + str(self.status)

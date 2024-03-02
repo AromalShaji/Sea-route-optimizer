@@ -120,6 +120,19 @@ def crewManager(request):
     return redirect('signinPage')
 
 #====================================================================================
+#----------------------------------------Ship Manager----------------------------------------
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def shipManager(request):
+    if 'id' in request.session:
+        crew = Crew.objects.all()
+        crewdrop = Crew.objects.filter(status = 1)
+        ship = Ship.objects.all()
+        shipdrop = Ship.objects.filter(status = 1)
+        return render(request,'Ship/shipManager.html',{'crew' : crew, 'ship' : ship, 'crewdrop' : crewdrop, 'shipdrop' : shipdrop})
+    return redirect('signinPage')
+
+
+#====================================================================================
 #----------------------------------------Add Ship----------------------------------------
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def addShip(request):
@@ -158,6 +171,22 @@ def crewStatusUpdate(request, id):
     return redirect('signinPage')
 
 #====================================================================================
+#----------------------------------------Crew Status Update----------------------------------------
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def shipStatusUpdate(request, id):
+    if 'id' in request.session:
+        if request.method == 'POST':
+            messages.success(request, "Status Updated")
+            ship = Ship.objects.get(id = id)
+            if ship.status == 1:
+                Ship.objects.filter(id = id).update(status=0)
+            else:
+                Ship.objects.filter(id = id).update(status=1)
+        return redirect('shipManager')
+    return redirect('signinPage')
+
+
+#====================================================================================
 #----------------------------------------Add Ship To Crew ----------------------------------------
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def addShipToCrew(request):
@@ -170,6 +199,19 @@ def addShipToCrew(request):
         return redirect('crewManager')
     return redirect('signinPage')
 
+
+#====================================================================================
+#----------------------------------------Add Ship To Crew ----------------------------------------
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def addCrewToShip(request):
+    if 'id' in request.session:
+        if request.method == 'POST':
+            crew = request.POST.get("crew")
+            ship = request.POST.get("ship")
+            Crew.objects.filter(id = crew, status = 1).update(ship = ship)
+            messages.success(request, "Updated")
+        return redirect('shipManager')
+    return redirect('signinPage')
 
 
 #====================================================================================

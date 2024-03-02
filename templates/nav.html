@@ -43,9 +43,20 @@
                   </li>
                 </ul>
               </li>
-              <li class="">
-                <a href="{% url 'crewManager' %}">Crew Manager</a>
+
+              <li class="has-children">
+                <a>MANAGE</a>
+                <ul class="dropdown">
+                  <li class="">
+                    <a href="{% url 'crewManager' %}">Crew Manager</a>
+                  </li>
+                  <li class="">
+                    <a href="{% url 'shipManager' %}">Ship Manager</a>
+                  </li>
+                </ul>
               </li>
+
+              
               {% endif %}
 
 

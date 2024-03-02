@@ -18,4 +18,7 @@ urlpatterns = [
     path('crewStatusUpdate/<id>', crewStatusUpdate, name='crewStatusUpdate'),
     path('addShip', addShip, name='addShip'),
     path('addShipToCrew', addShipToCrew, name='addShipToCrew'),
+    path('addCrewToShip', addCrewToShip, name='addCrewToShip'),
+    path('shipManager', shipManager, name='shipManager'),
+    path('shipStatusUpdate/<id>', shipStatusUpdate, name='shipStatusUpdate'),
 ]
