@@ -28,9 +28,23 @@
           <nav class="site-navigation position-relative text-right" role="navigation">
             <ul class="site-menu js-clone-nav mx-auto d-none d-lg-block">
 
-              {% if 'admin' in userType %}
+              {% if request.session.userType == 'admin' %}
+              <li class="has-children">
+                <a class="text-success">ADD</a>
+                <ul class="dropdown">
+                  <li class="">
+                    <a href="{% url 'addCrew' %}">Add Crew</a>
+                  </li>
+                  <li class="">
+                    <a href="{% url 'addPort' %}">Add Port</a>
+                  </li>
+                  <li class="">
+                    <a href="{% url 'addShip' %}">Add Ship</a>
+                  </li>
+                </ul>
+              </li>
               <li class="">
-                <a href="{% url 'addCrewPage' %}">Add Crew</a>
+                <a href="{% url 'crewManager' %}">Crew Manager</a>
               </li>
               {% endif %}
 
@@ -40,7 +54,12 @@
               </li>
 
               <li class="has-children">
-                <a href="\">USER NAME</a>
+                {% if 'id' in request.session %}
+                  <a>{{ request.session.name }}</a>
+                {% else %}
+                  <a> HELLO!</a>
+                {% endif %}
+
                 <ul class="dropdown">
                   {% if 'id' in request.session %}
                   <li class="">

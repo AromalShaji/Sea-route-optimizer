@@ -3,7 +3,7 @@ from django.shortcuts import redirect
 from datetime import datetime, date, timedelta
 import datetime
 from django.views.decorators.cache import cache_control
-from .models import useradmin
+from .models import useradmin, Crew, Port, Ship
 from django.http import JsonResponse
 from django.http import HttpResponse, FileResponse, HttpResponseRedirect
 from django.contrib import messages
@@ -32,6 +32,7 @@ def signinPage(request):
         if (useradmin.objects.filter(email=useremail, password=password)).exists():
             dis = useradmin.objects.get(email=useremail, password=password)
             request.session['id'] = dis.id
+            request.session['name'] = dis.name
             request.session['userType'] = dis.role
             messages.success(request, "Sign In Successfully")
             return redirect('home')
@@ -52,14 +53,103 @@ def signupPage(request):
 #====================================================================================
 #----------------------------------------Add crew page----------------------------------------
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
-def addCrewPage(request):
+def addCrew(request):
     if 'id' in request.session:
-        id=request.session['id']
-        userType=request.session['userType']
-        if (useradmin.objects.filter(id=id, role=userType)).exists():
-            dis = useradmin.objects.get(id=id, role=userType)
-            return render(request, 'Home/addCrew.html', {'id': id, 'userDeatils': dis, 'userType' : dis.role})   
-    return render(request,'Home/addCrew.html')
+        if request.method == 'POST':
+            name = request.POST.get("name")
+            email = request.POST.get("email")
+            phone = request.POST.get("phone")
+            password = request.POST.get("password")
+            if (useradmin.objects.filter(id=request.session['id'], role=request.session['userType'])).exists():
+                dis = useradmin.objects.get(id=request.session['id'], role=request.session['userType'])
+                ob = Crew()
+                ob.name = name
+                ob.email = email
+                if(Crew.objects.filter(email = email).exists()):
+                    messages.error(request, "Email Already Registered")
+                    return render(request,'Home/addCrew.html')
+                ob.phone = phone
+                ob.password = password
+                ob.added_user = dis.id
+                ob.save()
+                messages.success(request, "New Crew Added")
+            return render(request,'Home/addCrew.html')
+        return render(request,'Home/addCrew.html')
+    return redirect('signinPage')
+
+
+#====================================================================================
+#----------------------------------------Add port page----------------------------------------
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def addPort(request):
+    if 'id' in request.session:
+        if request.method == 'POST':
+            name = request.POST.get("name")
+            email = request.POST.get("email")
+            phone = request.POST.get("phone")
+            location = request.POST.get("location")
+            password = request.POST.get("password")
+            if (useradmin.objects.filter(id=request.session['id'], role=request.session['userType'])).exists():
+                dis = useradmin.objects.get(id=request.session['id'], role=request.session['userType'])
+                ob = Port()
+                ob.name = name
+                ob.email = email
+                if(Port.objects.filter(email = email).exists()):
+                    messages.error(request, "Email Already Registered")
+                    return render(request,'Home/addPort.html')
+                ob.location = location
+                ob.phone = phone
+                ob.password = password
+                ob.added_user = dis.id
+                ob.save()
+                messages.success(request, "New Port Added")
+                return render(request,'Home/addPort.html')
+        return render(request,'Home/addPort.html')
+    return redirect('signinPage')
+
+#====================================================================================
+#----------------------------------------Crew Manager----------------------------------------
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def crewManager(request):
+    if 'id' in request.session:
+        crew = Crew.objects.all()
+        return render(request,'Crew/crewManager.html',{'crew' : crew})
+    return redirect('signinPage')
+
+#====================================================================================
+#----------------------------------------Add Ship----------------------------------------
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def addShip(request):
+    if 'id' in request.session:
+        if request.method == 'POST':
+            name = request.POST.get("name")
+            phone = request.POST.get("phone")
+            if (useradmin.objects.filter(id=request.session['id'], role=request.session['userType'])).exists():
+                dis = useradmin.objects.get(id=request.session['id'], role=request.session['userType'])
+                ob = Ship()
+                ob.name = name
+                if(Ship.objects.filter(name = name).exists()):
+                    messages.error(request, "Ship Name Already Registered")
+                    return render(request,'Home/addSip.html')
+                ob.phone = phone
+                ob.save()
+                messages.success(request, "New Ship Added")
+                return render(request,'Home/addShip.html')
+        return render(request,'Home/addShip.html')
+    return redirect('signinPage')
+
+
+#====================================================================================
+#----------------------------------------Crew Update----------------------------------------
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def crewUpdate(request):
+    if 'id' in request.session:
+        if request.method == 'POST':
+            messages.success(request, "Details Updated")
+            crew = Crew.objects.all()
+        return redirect('crewManager')
+    return redirect('signinPage')
+
 
 
 #====================================================================================
