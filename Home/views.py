@@ -113,7 +113,10 @@ def addPort(request):
 def crewManager(request):
     if 'id' in request.session:
         crew = Crew.objects.all()
-        return render(request,'Crew/crewManager.html',{'crew' : crew})
+        crewdrop = Crew.objects.filter(status = 1)
+        ship = Ship.objects.all()
+        shipdrop = Ship.objects.filter(status = 1)
+        return render(request,'Crew/crewManager.html',{'crew' : crew, 'ship' : ship, 'crewdrop' : crewdrop, 'shipdrop' : shipdrop})
     return redirect('signinPage')
 
 #====================================================================================
@@ -140,13 +143,29 @@ def addShip(request):
 
 
 #====================================================================================
-#----------------------------------------Crew Update----------------------------------------
+#----------------------------------------Crew Status Update----------------------------------------
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
-def crewUpdate(request):
+def crewStatusUpdate(request, id):
     if 'id' in request.session:
         if request.method == 'POST':
-            messages.success(request, "Details Updated")
-            crew = Crew.objects.all()
+            messages.success(request, "Status Updated")
+            crew = Crew.objects.get(id = id)
+            if crew.status == 1:
+                Crew.objects.filter(id = id).update(status=0)
+            else:
+                Crew.objects.filter(id = id).update(status=1)
+        return redirect('crewManager')
+    return redirect('signinPage')
+
+#====================================================================================
+#----------------------------------------Add Ship To Crew ----------------------------------------
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def addShipToCrew(request, id):
+    if 'id' in request.session:
+        if request.method == 'POST':
+            crew = request.POST.get("crew")
+            ship = request.POST.get("ship")
+            messages.success(request, "Updated")
         return redirect('crewManager')
     return redirect('signinPage')
 

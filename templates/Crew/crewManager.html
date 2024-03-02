@@ -54,9 +54,10 @@
             </thead>
 
             <tbody>
-                <form id="translateForm" class="translator-form mt-5" action="{% url 'crewUpdate' %}" method="post">
+                {% for i in crew %}
+                <form id="translateForm" class="translator-form mt-5" action="{% url 'crewStatusUpdate' i.id %}"
+                    method="post">
                     {% csrf_token %}
-                    {% for i in crew %}
                     <tr class="{% cycle 'odd-row' 'even-row' %}">
                         <td>{{i.name}}</td>
                         <td>{{i.email}}</td>
@@ -78,11 +79,22 @@
                         <td class="text-danger py-2">NOT ACTIVE</td>
                         {% endif %}
 
+                        {% if i.status == 1 %}
                         <td>
-                            <button type="submit" class="btn btn-success text-black py-2 px-4 btn-block">UPDATE</button>
+                            <button type="submit"
+                                class="btn btn-danger text-black py-2 px-4 btn-block">DEACTIVATE</button>
                         </td>
+                        {% else %}
+                        <td>
+                            <button type="submit"
+                                class="btn btn-success text-black py-2 px-4 btn-block">ACTVATE</button>
+                        </td>
+                        {% endif %}
+
+
                     </tr>
-                    {% endfor %}
+                </form>
+                {% endfor %}
                 </form>
             </tbody>
         </table>
@@ -99,304 +111,41 @@
 </div>
 
 
-<div class="site-section block-13">
-    <!-- <div class="container"></div> -->
-
-
-    <div class="owl-carousel nonloop-block-13">
-        <div>
-            <a href="#" class="unit-1 text-center">
-                <img src="{% static 'images/img_1.jpg' %}" alt="Image" class="img-fluid">
-                <div class="unit-1-text">
-                    <h3 class="unit-1-heading">Storage</h3>
-                    <p class="px-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos tempore ullam minus
-                        voluptate
-                        libero.</p>
-                </div>
-            </a>
-        </div>
-
-        <div>
-            <a href="#" class="unit-1 text-center">
-                <img src="{% static 'images/img_2.jpg' %}" alt="Image" class="img-fluid">
-                <div class="unit-1-text">
-                    <h3 class="unit-1-heading">Air Transports</h3>
-                    <p class="px-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos tempore ullam minus
-                        voluptate
-                        libero.</p>
-                </div>
-            </a>
-        </div>
-
-        <div>
-            <a href="#" class="unit-1 text-center">
-                <img src="{% static 'images/img_3.jpg' %}" alt="Image" class="img-fluid">
-                <div class="unit-1-text">
-                    <h3 class="unit-1-heading">Cargo Transports</h3>
-                    <p class="px-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos tempore ullam minus
-                        voluptate
-                        libero.</p>
-                </div>
-            </a>
-        </div>
-
-        <div>
-            <a href="#" class="unit-1 text-center">
-                <img src="{% static 'images/img_4.jpg' %}" alt="Image" class="img-fluid">
-                <div class="unit-1-text">
-                    <h3 class="unit-1-heading">Cargo Ship</h3>
-                    <p class="px-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos tempore ullam minus
-                        voluptate
-                        libero.</p>
-                </div>
-            </a>
-        </div>
-
-        <div>
-            <a href="#" class="unit-1 text-center">
-                <img src="{% static 'images/img_5.jpg' %}" alt="Image" class="img-fluid">
-                <div class="unit-1-text">
-                    <h3 class="unit-1-heading">Ware Housing</h3>
-                    <p class="px-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos tempore ullam minus
-                        voluptate
-                        libero.</p>
-                </div>
-            </a>
-        </div>
-
-
-    </div>
-</div>
-
-
 
 
 <div class="site-section bg-light">
     <div class="container">
         <div class="row justify-content-center mb-5">
             <div class="col-md-7 text-center border-primary">
-                <h2 class="font-weight-light text-primary">More Services</h2>
-                <p class="color-black-opacity-5">We Offer The Following Services</p>
+                <h2 class="font-weight-light text-primary">ASSIGN SHIP TO THE CREW</h2>
+                <p class="color-black-opacity-5">Select the Ship from the List</p>
             </div>
         </div>
-        <div class="row align-items-stretch">
-            <div class="col-md-6 col-lg-4 mb-4 mb-lg-4">
-                <div class="unit-4 d-flex">
-                    <div class="unit-4-icon mr-4"><span class="text-primary flaticon-travel"></span></div>
-                    <div>
-                        <h3>Air Air Freight</h3>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis quis molestiae vitae
-                            eligendi at.
-                        </p>
-                        <p><a href="#">Learn More</a></p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4 mb-4 mb-lg-4">
-                <div class="unit-4 d-flex">
-                    <div class="unit-4-icon mr-4"><span class="text-primary flaticon-sea-ship-with-containers"></span>
-                    </div>
-                    <div>
-                        <h3>Ocean Freight</h3>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis quis molestiae vitae
-                            eligendi at.
-                        </p>
-                        <p><a href="#">Learn More</a></p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4 mb-4 mb-lg-4">
-                <div class="unit-4 d-flex">
-                    <div class="unit-4-icon mr-4"><span class="text-primary flaticon-frontal-truck"></span></div>
-                    <div>
-                        <h3>Ground Shipping</h3>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis quis molestiae vitae
-                            eligendi at.
-                        </p>
-                        <p><a href="#">Learn More</a></p>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="col-md-6 col-lg-4 mb-4 mb-lg-4">
-                <div class="unit-4 d-flex">
-                    <div class="unit-4-icon mr-4"><span class="text-primary flaticon-barn"></span></div>
-                    <div>
-                        <h3>Warehousing</h3>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis quis molestiae vitae
-                            eligendi at.
-                        </p>
-                        <p><a href="#">Learn More</a></p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4 mb-4 mb-lg-4">
-                <div class="unit-4 d-flex">
-                    <div class="unit-4-icon mr-4"><span class="text-primary flaticon-platform"></span></div>
-                    <div>
-                        <h3>Storage</h3>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis quis molestiae vitae
-                            eligendi at.
-                        </p>
-                        <p><a href="#">Learn More</a></p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4 mb-4 mb-lg-4">
-                <div class="unit-4 d-flex">
-                    <div class="unit-4-icon mr-4"><span class="text-primary flaticon-car"></span></div>
-                    <div>
-                        <h3>Delivery Van</h3>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis quis molestiae vitae
-                            eligendi at.
-                        </p>
-                        <p><a href="#">Learn More</a></p>
-                    </div>
-                </div>
-            </div>
-
+        <div class="form-group mb-4">
+            <label for="fq_email">Crew</label>
+            <select class="form-control btn-block" id="ship" name="ship" required style="height: 60px;">
+                <option value="" selected disabled>SELECT CREW</option>
+                {% for i in crewdrop %}
+                <option value="{{ i.id }}">{{ i.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group mb-4">
+            <label for="fq_email">Ship</label>
+            <select class="form-control btn-block" id="ship" name="ship" required style="height: 60px;">
+                <option value="" selected disabled>SELECT SHIP</option>
+                {% for i in shipdrop %}
+                <option value="{{ i.id }}">{{ i.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group mt-5">
+            <a href="{% url 'home' %}" class="btn btn-warning text-black py-2 px-4 btn-block"
+                style="display: inline-block;">UPDATE</a>
         </div>
     </div>
 </div>
 
-<div class="site-blocks-cover overlay inner-page-cover"
-    style="background-image: url(images/hero_bg_2.jpg); background-attachment: fixed;">
-    <div class="container">
-        <div class="row align-items-center justify-content-center text-center">
-
-            <div class="col-md-7" data-aos="fade-up" data-aos-delay="400">
-                <a href="https://vimeo.com/channels/staffpicks/93951774"
-                    class="play-single-big mb-4 d-inline-block popup-vimeo"><span class="icon-play"></span></a>
-                <h2 class="text-white font-weight-light mb-5 h1">View Our Services By Watching This Short Video</h2>
-
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="site-section border-bottom">
-    <div class="container">
-
-        <div class="row justify-content-center mb-5">
-            <div class="col-md-7 text-center border-primary">
-                <h2 class="font-weight-light text-primary">Testimonials</h2>
-            </div>
-        </div>
-
-        <div class="slide-one-item home-slider owl-carousel">
-            <div>
-                <div class="testimonial">
-                    <figure class="mb-4">
-                        <img src="{% static 'images/person_3.jpg' %}" alt="Image" class="img-fluid mb-3">
-                        <p>John Smith</p>
-                    </figure>
-                    <blockquote>
-                        <p>&ldquo;Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur unde
-                            reprehenderit aperiam
-                            quaerat fugiat repudiandae explicabo animi minima fuga beatae illum eligendi incidunt
-                            consequatur. Amet
-                            dolores excepturi earum unde iusto.&rdquo;</p>
-                    </blockquote>
-                </div>
-            </div>
-            <div>
-                <div class="testimonial">
-                    <figure class="mb-4">
-                        <img src="{% static 'images/person_2.jpg' %}" alt="Image" class="img-fluid mb-3">
-                        <p>Christine Aguilar</p>
-                    </figure>
-                    <blockquote>
-                        <p>&ldquo;Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur unde
-                            reprehenderit aperiam
-                            quaerat fugiat repudiandae explicabo animi minima fuga beatae illum eligendi incidunt
-                            consequatur. Amet
-                            dolores excepturi earum unde iusto.&rdquo;</p>
-                    </blockquote>
-                </div>
-            </div>
-
-            <div>
-                <div class="testimonial">
-                    <figure class="mb-4">
-                        <img src="{% static 'images/person_4.jpg' %}" alt="Image" class="img-fluid mb-3">
-                        <p>Robert Spears</p>
-                    </figure>
-                    <blockquote>
-                        <p>&ldquo;Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur unde
-                            reprehenderit aperiam
-                            quaerat fugiat repudiandae explicabo animi minima fuga beatae illum eligendi incidunt
-                            consequatur. Amet
-                            dolores excepturi earum unde iusto.&rdquo;</p>
-                    </blockquote>
-                </div>
-            </div>
-
-            <div>
-                <div class="testimonial">
-                    <figure class="mb-4">
-                        <img src="{% static 'images/person_5.jpg' %}" alt="Image" class="img-fluid mb-3">
-                        <p>Bruce Rogers</p>
-                    </figure>
-                    <blockquote>
-                        <p>&ldquo;Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur unde
-                            reprehenderit aperiam
-                            quaerat fugiat repudiandae explicabo animi minima fuga beatae illum eligendi incidunt
-                            consequatur. Amet
-                            dolores excepturi earum unde iusto.&rdquo;</p>
-                    </blockquote>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</div>
-
-<div class="site-section">
-    <div class="container">
-        <div class="row justify-content-center mb-5">
-            <div class="col-md-7 text-center border-primary">
-                <h2 class="font-weight-light text-primary">Our Blog</h2>
-                <p class="color-black-opacity-5">See Our Daily News &amp; Updates</p>
-            </div>
-        </div>
-        <div class="row mb-3 align-items-stretch">
-            <div class="col-md-6 col-lg-6 mb-4 mb-lg-4">
-                <div class="h-entry">
-                    <img src="{% static 'images/blog_1.jpg' %}" alt="Image" class="img-fluid">
-                    <h2 class="font-size-regular"><a href="#">Warehousing Your Packages</a></h2>
-                    <div class="meta mb-4">by Theresa Winston <span class="mx-2">&bullet;</span> Jan 18, 2019 at 2:00 pm
-                        <span class="mx-2">&bullet;</span> <a href="#">News</a>
-                    </div>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus eligendi nobis ea maiores sapiente
-                        veritatis reprehenderit suscipit quaerat rerum voluptatibus a eius.</p>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-6 mb-4 mb-lg-4">
-                <div class="h-entry">
-                    <img src="{% static 'images/blog_2.jpg' %}" alt="Image" class="img-fluid">
-                    <h2 class="font-size-regular"><a href="#">Warehousing Your Packages</a></h2>
-                    <div class="meta mb-4">by Theresa Winston <span class="mx-2">&bullet;</span> Jan 18, 2019 at 2:00 pm
-                        <span class="mx-2">&bullet;</span> <a href="#">News</a>
-                    </div>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus eligendi nobis ea maiores sapiente
-                        veritatis reprehenderit suscipit quaerat rerum voluptatibus a eius.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="site-section border-top">
-    <div class="container">
-        <div class="row text-center">
-            <div class="col-md-12">
-                <h2 class="mb-5 text-black">Try Our Services</h2>
-                <p class="mb-0"><a href="/" class="btn btn-primary py-3 px-5 text-white">Get Started</a></p>
-            </div>
-        </div>
-    </div>
-</div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>

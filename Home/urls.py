@@ -15,6 +15,7 @@ urlpatterns = [
     path('logout', logout, name='logout'),
     path('addPort', addPort, name='addPort'),
     path('crewManager', crewManager, name='crewManager'),
-    path('crewUpdate', crewUpdate, name='crewUpdate'),
+    path('crewStatusUpdate/<id>', crewStatusUpdate, name='crewStatusUpdate'),
     path('addShip', addShip, name='addShip'),
+    path('addShipToCrew', addShipToCrew, name='addShipToCrew'),
 ]
