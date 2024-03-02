@@ -160,11 +160,12 @@ def crewStatusUpdate(request, id):
 #====================================================================================
 #----------------------------------------Add Ship To Crew ----------------------------------------
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
-def addShipToCrew(request, id):
+def addShipToCrew(request):
     if 'id' in request.session:
         if request.method == 'POST':
             crew = request.POST.get("crew")
             ship = request.POST.get("ship")
+            Crew.objects.filter(id = crew, status = 1).update(ship = ship)
             messages.success(request, "Updated")
         return redirect('crewManager')
     return redirect('signinPage')

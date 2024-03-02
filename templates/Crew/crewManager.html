@@ -63,13 +63,17 @@
                         <td>{{i.email}}</td>
                         <td>{{i.phone}}</td>
 
-                        {% if i.ship %}
-                        <td class="text-success py-2 px-4">
-                            {{i.ship}}
-                        </td>
-                        {% else %}
+                        {% if not i.ship %}
                         <td class="text-danger py-2 px-4">
                             NOT ASSIGNED
+                        </td>
+                        {% else %}
+                        <td class="text-success py-2 px-4">
+                            {% for j in ship %}
+                            {% if i.ship == j.id|stringformat:"s" %}
+                            {{ j.name }}
+                            {% endif %}
+                            {% endfor %}
                         </td>
                         {% endif %}
 
@@ -121,28 +125,28 @@
                 <p class="color-black-opacity-5">Select the Ship from the List</p>
             </div>
         </div>
-        <div class="form-group mb-4">
-            <label for="fq_email">Crew</label>
-            <select class="form-control btn-block" id="ship" name="ship" required style="height: 60px;">
-                <option value="" selected disabled>SELECT CREW</option>
-                {% for i in crewdrop %}
-                <option value="{{ i.id }}">{{ i.name }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <div class="form-group mb-4">
-            <label for="fq_email">Ship</label>
-            <select class="form-control btn-block" id="ship" name="ship" required style="height: 60px;">
-                <option value="" selected disabled>SELECT SHIP</option>
-                {% for i in shipdrop %}
-                <option value="{{ i.id }}">{{ i.name }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <div class="form-group mt-5">
-            <a href="{% url 'home' %}" class="btn btn-warning text-black py-2 px-4 btn-block"
-                style="display: inline-block;">UPDATE</a>
-        </div>
+        <form id="translateForm" class="translator-form mt-5" action="{% url 'addShipToCrew' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group mb-4">
+                <label for="fq_email">Crew</label>
+                <select class="form-control btn-block" id="crew" name="crew" required style="height: 60px;">
+                    <option value="" selected disabled>SELECT CREW</option>
+                    {% for i in crewdrop %}
+                    <option value="{{ i.id }}">{{ i.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group mb-4">
+                <label for="fq_email">Ship</label>
+                <select class="form-control btn-block" id="ship" name="ship" required style="height: 60px;">
+                    <option value="" selected disabled>SELECT SHIP</option>
+                    {% for i in shipdrop %}
+                    <option value="{{ i.id }}">{{ i.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-success text-black py-2 px-4 btn-block">UPDATE</button>
+        </form>
     </div>
 </div>
 

@@ -30,7 +30,7 @@
 
               {% if request.session.userType == 'admin' %}
               <li class="has-children">
-                <a class="text-success">ADD</a>
+                <a>ADD</a>
                 <ul class="dropdown">
                   <li class="">
                     <a href="{% url 'addCrew' %}">Add Crew</a>
@@ -55,9 +55,9 @@
 
               <li class="has-children">
                 {% if 'id' in request.session %}
-                  <a>{{ request.session.name }}</a>
+                <a>{{ request.session.name }}</a>
                 {% else %}
-                  <a> HELLO!</a>
+                <a> HELLO!</a>
                 {% endif %}
 
                 <ul class="dropdown">
