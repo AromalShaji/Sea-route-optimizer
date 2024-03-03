@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from django.http import HttpResponse, FileResponse, HttpResponseRedirect
 from django.contrib import messages
 
+
 #====================================================================================
 #----------------------------------------home----------------------------------------
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
@@ -22,6 +23,7 @@ def home(request):
     return render(request,'Home/index.html')
 
 
+
 #====================================================================================
 #----------------------------------------signin page----------------------------------------
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
@@ -34,7 +36,7 @@ def signinPage(request):
             request.session['id'] = dis.id
             request.session['name'] = dis.name
             request.session['userType'] = dis.role
-            messages.success(request, "Sign In Successfully")
+            messages.success(request, "Login Successfully")
             return redirect('home')
         else:
             msg = "wrong user name or password or account does not exist!!"
@@ -43,11 +45,13 @@ def signinPage(request):
     return render(request,'signin.html')
 
 
+
 #====================================================================================
 #----------------------------------------signup page----------------------------------------
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def signupPage(request):
-    return render(request,'signin.html')
+    return render(request,'signup.html')
+
 
 
 #====================================================================================
@@ -76,6 +80,7 @@ def addCrew(request):
             return render(request,'Home/addCrew.html')
         return render(request,'Home/addCrew.html')
     return redirect('signinPage')
+
 
 
 #====================================================================================
@@ -107,6 +112,8 @@ def addPort(request):
         return render(request,'Home/addPort.html')
     return redirect('signinPage')
 
+
+
 #====================================================================================
 #----------------------------------------Crew Manager----------------------------------------
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
@@ -119,6 +126,8 @@ def crewManager(request):
         return render(request,'Crew/crewManager.html',{'crew' : crew, 'ship' : ship, 'crewdrop' : crewdrop, 'shipdrop' : shipdrop})
     return redirect('signinPage')
 
+
+
 #====================================================================================
 #----------------------------------------Ship Manager----------------------------------------
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
@@ -128,8 +137,25 @@ def shipManager(request):
         crewdrop = Crew.objects.filter(status = 1)
         ship = Ship.objects.all()
         shipdrop = Ship.objects.filter(status = 1)
-        return render(request,'Ship/shipManager.html',{'crew' : crew, 'ship' : ship, 'crewdrop' : crewdrop, 'shipdrop' : shipdrop})
+        ship_crew_counts = {}
+        for ships in ship:
+            crew_count = Crew.objects.filter(ship=ships.id).count()
+            ship_crew_counts[ships.id] = crew_count
+        return render(request,'Ship/shipManager.html',{'crew' : crew, 'ship' : ship, 'crewdrop' : crewdrop, 'shipdrop' : shipdrop, 'ship_crew_counts' : ship_crew_counts})
     return redirect('signinPage')
+
+
+
+#====================================================================================
+#----------------------------------------Port Manager----------------------------------------
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def portManager(request):
+    if 'id' in request.session:
+        port = Port.objects.all()
+        portdrop = Port.objects.filter(status = 1)
+        return render(request,'Port/portManager.html',{'port' : port, 'portdrop' : portdrop})
+    return redirect('signinPage')
+
 
 
 #====================================================================================
@@ -156,6 +182,22 @@ def addShip(request):
 
 
 #====================================================================================
+#----------------------------------------Add Container----------------------------------------
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def addContainer(request):
+    if 'id' in request.session:
+        if request.method == 'POST':
+            name = request.POST.get("name")
+            phone = request.POST.get("phone")
+            messages.success(request, "New Ship Added")
+            return render(request,'Home/addContainer.html')
+        return render(request,'Home/addContainer.html')
+    return redirect('signinPage')
+
+
+
+
+#====================================================================================
 #----------------------------------------Crew Status Update----------------------------------------
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def crewStatusUpdate(request, id):
@@ -169,6 +211,25 @@ def crewStatusUpdate(request, id):
                 Crew.objects.filter(id = id).update(status=1)
         return redirect('crewManager')
     return redirect('signinPage')
+
+
+
+#====================================================================================
+#----------------------------------------Port Status Update----------------------------------------
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def portStatusUpdate(request, id):
+    if 'id' in request.session:
+        if request.method == 'POST':
+            messages.success(request, "Status Updated")
+            port = Port.objects.get(id = id)
+            if port.status == 1:
+                Port.objects.filter(id = id).update(status=0)
+            else:
+                Port.objects.filter(id = id).update(status=1)
+        return redirect('portManager')
+    return redirect('signinPage')
+
+
 
 #====================================================================================
 #----------------------------------------Crew Status Update----------------------------------------

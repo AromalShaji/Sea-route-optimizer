@@ -19,6 +19,9 @@ urlpatterns = [
     path('addShip', addShip, name='addShip'),
     path('addShipToCrew', addShipToCrew, name='addShipToCrew'),
     path('addCrewToShip', addCrewToShip, name='addCrewToShip'),
+    path('addContainer', addContainer, name='addContainer'),
     path('shipManager', shipManager, name='shipManager'),
+    path('portManager', portManager, name='portManager'),
     path('shipStatusUpdate/<id>', shipStatusUpdate, name='shipStatusUpdate'),
+    path('portStatusUpdate/<id>', portStatusUpdate, name='portStatusUpdate'),
 ]

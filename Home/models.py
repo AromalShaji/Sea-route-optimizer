@@ -13,7 +13,7 @@ class useradmin(models.Model):
     role = models.CharField(max_length=100, default='admin')
 
     def __str__(self):
-        return self.name
+        return " Name : " + self.name
 
 class Crew(models.Model):
     name = models.CharField(max_length=100)
@@ -26,7 +26,7 @@ class Crew(models.Model):
     added_user = models.CharField(max_length=50, default='')
 
     def __str__(self):
-        return self.name + " : " + str(self.ship)+ " : " + str(self.status)
+        return " Crew : " + self.name + " , Ship : " + str(self.ship)+ " , Status : " + str(self.status)
 
 
 class Port(models.Model):
@@ -40,7 +40,7 @@ class Port(models.Model):
     added_user = models.CharField(max_length=50, default='')
 
     def __str__(self):
-        return self.name + " : " + str(self.location)+ " : " + str(self.status)
+        return " Port : " + self.name + " , Loctaion : " + str(self.location)+ " , Status :"  + str(self.status)
 
 class Ship(models.Model):
     name = models.CharField(max_length=100)
@@ -52,4 +52,17 @@ class Ship(models.Model):
     added_user = models.CharField(max_length=50, default='')
 
     def __str__(self):
-        return self.name + " : " + str(self.status)
+        return " Ship : " + self.name + " , Status : " + str(self.status)
+
+class Container(models.Model):
+    containerNumber = models.CharField(max_length=100)
+    source = models.CharField(max_length=150, default='')
+    destination = models.CharField(max_length=150, default='')
+    ship = models.CharField(max_length=150, default='')
+    source_status = models.BooleanField(default='1')
+    destination_status = models.BooleanField(default='1')
+    status = models.BooleanField(default='1')
+    added_user = models.CharField(max_length=50, default='')
+
+    def __str__(self):
+        return " Container Number : " + self.containerNumber + " , Ship : " + str(self.ship) + " , Status : " + str(self.status)

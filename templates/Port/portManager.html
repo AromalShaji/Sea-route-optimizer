@@ -6,12 +6,12 @@
 {% include 'nav.html' %}
 
 
-<div class="site-blocks-cover overlay" style="background-image: url(static/images/hero_bg_6.jpg);" data-aos="fade"
+<div class="site-blocks-cover overlay" style="background-image: url(static/images/port.jpg);" data-aos="fade"
     data-stellar-background-ratio="0.5">
     <div class="container">
         <div class="row align-items-center justify-content-center text-center">
             <div class="col-md-8" data-aos="fade-up" data-aos-delay="400">
-                <h1 class="text-white font-weight-light mb-5 text-uppercase font-weight-bold">SHIP MANAGER</h1>
+                <h1 class="text-white font-weight-light mb-5 text-uppercase font-weight-bold">PORT MANAGER</h1>
                 {% if messages %}
                 <ul class="messages">
                     {% for message in messages %}
@@ -31,7 +31,7 @@
 
     <div class="row align-items-center justify-content-between">
         <div class="col-md-6">
-            <h2><b>SHIP DETAILS</b></h2>
+            <h2><b>PORT DETAILS</b></h2>
         </div>
 
         <div class="col-md-6">
@@ -45,50 +45,24 @@
             <thead>
                 <tr>
                     <th>NAME</th>
-                    <th>NUMBER OF CREW</th>
+                    <th>EMAIL</th>
                     <th>PHONE</th>
-                    <th>SOURCE</th>
-                    <th>DESTINATION</th>
+                    <th>LOCATION</th>
                     <th>STATUS</th>
                     <th></th>
                 </tr>
             </thead>
 
             <tbody>
-                {% for i in ship %}
-                <form id="translateForm" class="translator-form mt-5" action="{% url 'shipStatusUpdate' i.id %}"
+                {% for i in port %}
+                <form id="translateForm" class="translator-form mt-5" action="{% url 'portStatusUpdate' i.id %}"
                     method="post">
                     {% csrf_token %}
                     <tr class="{% cycle 'odd-row' 'even-row' %}">
                         <td>{{i.name}}</td>
-                        <td>
-                            {% for j, count in ship_crew_counts.items %}
-                            {% if j == i.id %}
-                            {{ count }}
-                            {% endif %}
-                            {% endfor %}
-                        </td>
+                        <td>{{i.email}}</td>
                         <td>{{i.phone}}</td>
-
-                        {% if not i.source %}
-                        <td class="text-danger py-2 px-4">
-                            NOT ASSIGNED
-                        </td>
-                        {% else %}
-                        <td class="text-success py-2 px-4">
-                            {{ i.source }}
-                        </td>
-                        {% endif %}
-
-                        {% if not i.destination %}
-                        <td class="text-danger py-2 px-4">
-                            NOT ASSIGNED
-                        </td>
-                        {% else %}
-                        <td class="text-success py-2 px-4">
-                            {{ i.destination }}
-                        </td>
-                        {% endif %}
+                        <td>{{i.location}}</td>
 
                         {% if i.status == 1 %}
                         <td class="text-success py-2">ACTIVE</td>
@@ -125,41 +99,6 @@
 
 </div>
 
-
-
-
-<div class="site-section bg-light">
-    <div class="container">
-        <div class="row justify-content-center mb-5">
-            <div class="col-md-7 text-center border-primary">
-                <h2 class="font-weight-light text-primary">ASSIGN CREW TO THE SHIP</h2>
-                <p class="color-black-opacity-5">Select the Ship from the List</p>
-            </div>
-        </div>
-        <form id="translateForm" class="translator-form mt-5" action="{% url 'addCrewToShip' %}" method="post">
-            {% csrf_token %}
-            <div class="form-group mb-4">
-                <label for="fq_email">Crew</label>
-                <select class="form-control btn-block" id="crew" name="crew" required style="height: 60px;">
-                    <option value="" selected disabled>SELECT CREW</option>
-                    {% for i in crewdrop %}
-                    <option value="{{ i.id }}">{{ i.name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="form-group mb-4">
-                <label for="fq_email">Ship</label>
-                <select class="form-control btn-block" id="ship" name="ship" required style="height: 60px;">
-                    <option value="" selected disabled>SELECT SHIP</option>
-                    {% for i in shipdrop %}
-                    <option value="{{ i.id }}">{{ i.name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <button type="submit" class="btn btn-success text-black py-2 px-4 btn-block">UPDATE</button>
-        </form>
-    </div>
-</div>
 
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

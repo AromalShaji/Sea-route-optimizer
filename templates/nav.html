@@ -41,6 +41,9 @@
                   <li class="">
                     <a href="{% url 'addShip' %}">Add Ship</a>
                   </li>
+                  <li class="">
+                    <a href="{% url 'addContainer' %}">Add Container</a>
+                  </li>
                 </ul>
               </li>
 
@@ -53,15 +56,18 @@
                   <li class="">
                     <a href="{% url 'shipManager' %}">Ship Manager</a>
                   </li>
+                  <li class="">
+                    <a href="{% url 'portManager' %}">Port Manager</a>
+                  </li>
                 </ul>
               </li>
 
-              
+
               {% endif %}
 
 
               <li class="">
-                <a href="">ABOUT</a>
+                <a href="/">ABOUT</a>
               </li>
 
               <li class="has-children">
