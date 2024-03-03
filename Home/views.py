@@ -40,6 +40,20 @@ def crewHome(request):
 
 
 #====================================================================================
+#----------------------------------------Ship home----------------------------------------
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def shipHome(request):
+    today = datetime.datetime.now().date()
+    if 'id' in request.session:
+        id=request.session['id']
+        userType=request.session['userType']
+        if (Ship.objects.filter(id=id, role=userType)).exists():
+            dis = Ship.objects.get(id=id, role=userType)
+            container = Container.objects.filter(ship = dis.id)
+            return render(request, 'Ship/home.html', {'id': id, 'userDeatils': dis, 'userType' : dis.role, 'container' : container})    
+    return render(request,'Ship/home.html')
+
+#====================================================================================
 #----------------------------------------signin page----------------------------------------
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def signinPage(request):
@@ -60,6 +74,13 @@ def signinPage(request):
             request.session['userType'] = dis.role
             messages.success(request, "Login Successfully")
             return redirect('crewHome')
+        elif (Ship.objects.filter(name=useremail, password=password)).exists():
+            dis = Ship.objects.get(name=useremail, password=password)
+            request.session['id'] = dis.id
+            request.session['name'] = dis.name
+            request.session['userType'] = dis.role
+            messages.success(request, "Login Successfully")
+            return redirect('shipHome')
         else:
             msg = "wrong user name or password or account does not exist!!"
             messages.error(request, msg)
@@ -199,14 +220,17 @@ def addShip(request):
         if request.method == 'POST':
             name = request.POST.get("name")
             phone = request.POST.get("phone")
+            password = request.POST.get("password")
             if (useradmin.objects.filter(id=request.session['id'], role=request.session['userType'])).exists():
                 dis = useradmin.objects.get(id=request.session['id'], role=request.session['userType'])
                 ob = Ship()
                 ob.name = name
                 if(Ship.objects.filter(name = name).exists()):
                     messages.error(request, "Ship Name Already Registered")
-                    return render(request,'Home/addSip.html')
+                    return render(request,'Home/addShip.html')
                 ob.phone = phone
+                ob.password = password
+                ob.added_user = dis.id
                 ob.save()
                 messages.success(request, "New Ship Added")
                 return render(request,'Home/addShip.html')

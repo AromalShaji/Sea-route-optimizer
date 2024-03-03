@@ -47,6 +47,7 @@ class Ship(models.Model):
     phone = models.CharField(max_length=15, default='')
     source = models.CharField(max_length=150, default='')
     destination = models.CharField(max_length=150, default='')
+    password = models.CharField(max_length=50, default='123456')
     status = models.BooleanField(default='1')
     role = models.CharField(max_length=100, default='ship')
     added_user = models.CharField(max_length=50, default='')

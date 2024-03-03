@@ -10,6 +10,7 @@ urlpatterns = [
     #home
     path('', home, name='home'),
     path('crewHome', crewHome, name='crewHome'),
+    path('shipHome', shipHome, name='shipHome'),
     path('signinPage', signinPage, name='signinPage'),
     path('signupPage', signupPage, name='signupPage'),
     path('addCrew', addCrew, name='addCrew'),
