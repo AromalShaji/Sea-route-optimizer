@@ -35,7 +35,6 @@
 
 
 <div class="container mt-5 text-dark">
-
     <div class="row align-items-center justify-content-between">
         <div class="col-md-6">
             <h2><b>CONTAINER DETAILS</b></h2>
@@ -54,7 +53,6 @@
                     <th>CONTAINER NUMBER</th>
                     <th>SOURCE</th>
                     <th>DESTINATION</th>
-                    <th>SHIP</th>
                     <th>COLLECT STATUS</th>
                     <th>DROP STATUS</th>
                     <th>COMPLETE STATUS</th>
@@ -62,51 +60,38 @@
             </thead>
 
             <tbody>
+                {% if container %}
                 {% for i in container %}
                 <tr class="{% cycle 'odd-row' 'even-row' %}">
                     <td>{{i.containerNumber}}</td>
                     <td>{{i.source}}</td>
                     <td>{{i.destination}}</td>
 
-                    {% if not i.ship %}
-                    <td class="text-danger py-2 px-4">
-                        NOT ASSIGNED
-                    </td>
-                    {% else %}
-                    <td class="text-success py-2 px-4">
-                        {% if i.ship == ship.id|stringformat:"s" %}
-                        {{ ship.name }}
-                        {% endif %}
-                    </td>
-                    {% endif %}
-
-                    <form id="translateForm" class="translator-form mt-5"
-                        action="" method="post">
+                    <form id="translateForm" class="translator-form mt-5" action="" method="post">
                         {% csrf_token %}
                         {% if i.collect_status == 1 %}
                         <td class="text-success py-2">
-                            <button type="submit"
-                                class="btn btn-success text-black py-2 px-4 btn-block">COLLECTED</button>
+                            <div type="submit" class="btn btn-success text-black py-2 px-4 btn-block">COLLECTED</div>
                         </td>
                         {% elif i.collect_status == 0 %}
                         <td class="text-danger py-2">
-                            <button type="submit" class="btn btn-danger text-black py-2 px-4 btn-block">NOT
-                                COLLECTED</button>
+                            <div class="btn btn-danger text-black py-2 px-4 btn-block">NOT
+                                COLLECTED</div>
                         </td>
                         {% endif %}
                     </form>
 
-                    <form id="translateForm" class="translator-form mt-5"
-                        action="" method="post">
+                    <form id="translateForm" class="translator-form mt-5" action="" method="post">
                         {% csrf_token %}
                         {% if i.drop_status == 1 %}
                         <td class="text-success py-2">
-                            <button type="submit" class="btn btn-success text-black py-2 px-4 btn-block">DROPED</button>
+                            <div class="btn btn-success text-black py-2 px-4 btn-block">DROPED</div>
                         </td>
                         {% else %}
                         <td class="text-success py-2">
-                            <button type="submit" class="btn btn-danger text-black py-2 px-4 btn-block">NOT
-                                DROPED</button>
+                            <div class="btn btn-danger text-black py-2 px-4 btn-block">NOT
+                                DROPED
+                            </div>
                         </td>
                         {% endif %}
                     </form>
@@ -119,15 +104,71 @@
 
                 </tr>
                 {% endfor %}
+                {% else %}
+                <tr class="{% cycle 'odd-row' 'even-row' %}">
+                    <td class="bg-danger text-center font-weight-bold" colspan="6">NOT ASSIGNED</td>
+                </tr>
+                {% endif %}
             </tbody>
         </table>
-        <div class="form-group mt-5">
-            <a href="{% url 'shipHome' %}" class="btn btn-warning text-black py-2 px-4 btn-block"
-                style="display: inline-block;">BACK</a>
-        </div>
     </div>
 </div>
 
+
+
+<div class="site-section">
+
+</div>
+
+
+<div class="container mt-5  text-dark">
+    <div class="row align-items-center justify-content-between ">
+        <div class="col-md-6 mt-5">
+            <h2><b>CREW DETAILS</b></h2>
+        </div>
+
+        <div class="col-md-6">
+            <div class="d-flex justify-content-end ">
+                <input type="text" id="searchInput2" class="form-control mt-5" placeholder="Search...">
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive mt-5 justify-content-center">
+        <table class="table text-dark justify-content-center" id="detailsTable2">
+            <thead>
+                <tr>
+                    <th>NAME</th>
+                    <th>EMAIL</th>
+                    <th>PHONE</th>
+                    <th>STATUS</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% if crew %}
+                {% for i in crew %}
+                <tr class="{% cycle 'odd-row' 'even-row' %}">
+                    <td>{{i.name}}</td>
+                    <td>{{i.email}}</td>
+                    <td>{{i.phone}}</td>
+
+                    {% if i.status == 1 %}
+                    <td class="text-success py-2">ACTIVATE</td>
+                    {% else %}
+                    <td class="text-danger py-2">NOT ACTIVATE</td>
+                    {% endif %}
+
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr class="{% cycle 'odd-row' 'even-row' %}">
+                    <td class="bg-danger text-center font-weight-bold" colspan="6">NOT ASSIGNED</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
 
 
 <div class="site-section">
@@ -144,6 +185,20 @@
         $('#searchInput').on('keyup', function () {
             var searchText = $(this).val().toLowerCase();
             $('#detailsTable tbody tr').each(function () {
+                var text = $(this).text().toLowerCase();
+                if (text.includes(searchText)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        });
+    });
+
+    $(document).ready(function () {
+        $('#searchInput2').on('keyup', function () {
+            var searchText = $(this).val().toLowerCase();
+            $('#detailsTable2 tbody tr').each(function () {
                 var text = $(this).text().toLowerCase();
                 if (text.includes(searchText)) {
                     $(this).show();

@@ -50,7 +50,8 @@ def shipHome(request):
         if (Ship.objects.filter(id=id, role=userType)).exists():
             dis = Ship.objects.get(id=id, role=userType)
             container = Container.objects.filter(ship = dis.id)
-            return render(request, 'Ship/home.html', {'id': id, 'userDeatils': dis, 'userType' : dis.role, 'container' : container})    
+            crew = Crew.objects.filter(ship = dis.id)
+            return render(request, 'Ship/home.html', {'id': id, 'userDeatils': dis, 'userType' : dis.role, 'container' : container, 'crew' : crew})    
     return render(request,'Ship/home.html')
 
 #====================================================================================
@@ -409,4 +410,4 @@ def addCrewToShip(request):
 def logout(request):
     request.session.flush()
     messages.success(request, "Logout Successfull")
-    return redirect('home')
+    return redirect('signinPage')

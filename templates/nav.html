@@ -21,7 +21,7 @@
       <div class="row align-items-center">
         <div class="col-11 col-xl-2">
           <h1 class="mb-0">
-            <a href="{% url 'home' %}" class="text-white h2 mb-0"><b>MARENGO</b></a>
+            <a href="" class="text-white h2 mb-0"><b>MARENGO</b></a>
           </h1>
         </div>
         <div class="col-12 col-md-10 d-none d-xl-block">
@@ -29,9 +29,9 @@
             <ul class="site-menu js-clone-nav mx-auto d-none d-lg-block">
 
               {% if request.session.userType == 'admin' %}
-              <li class="has-children">
+              <li class="has-children h6 has-children  text-center rounded font-weight-bold">
                 <a>ADD</a>
-                <ul class="dropdown">
+                <ul class="dropdown font-weight-light">
                   <li class="">
                     <a href="{% url 'addCrew' %}">Add Crew</a>
                   </li>
@@ -47,9 +47,9 @@
                 </ul>
               </li>
 
-              <li class="has-children">
+              <li class="has-children h6 has-children text-center rounded font-weight-bold">
                 <a>MANAGE</a>
-                <ul class="dropdown">
+                <ul class="dropdown font-weight-light">
                   <li class="">
                     <a href="{% url 'crewManager' %}">Crew Manager</a>
                   </li>
@@ -69,18 +69,14 @@
               {% endif %}
 
 
-              <li class="">
-                <a href="/">ABOUT</a>
-              </li>
-
-              <li class="has-children">
+              <li class="h6 has-children text-center rounded font-weight-bold">
                 {% if 'id' in request.session %}
                 <a>{{ request.session.name }}</a>
                 {% else %}
                 <a> HELLO!</a>
                 {% endif %}
 
-                <ul class="dropdown">
+                <ul class="dropdown font-weight-light">
                   {% if 'id' in request.session %}
                   <li class="">
                     <a href="{% url 'logout' %}"><b>LOGOUT</b></a>
