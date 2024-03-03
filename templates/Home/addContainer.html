@@ -38,12 +38,12 @@
         <div class="col-md-8">
             <div class="free-quote bg-dark h-100">
                 <h2 class="my-4 heading text-center">ADD CONTAINER</h2>
-                <form id="translateForm" class="translator-form mt-5" action="{% url 'addCrew' %}" method="post">
+                <form id="translateForm" class="translator-form mt-5" action="{% url 'addContainer' %}" method="post">
                     {% csrf_token %}
                     <div class="form-group">
                         <label for="fq_name">Container Number</label>
-                        <input type="text" class="form-control btn-block" id="fq_name" name="name"
-                            placeholder="Enter Name" required />
+                        <input type="text" class="form-control btn-block" id="fq_name" name="number"
+                            placeholder="Enter Container Number" required />
                     </div>
                     <div class="form-group mb-4">
                         <label for="fq_email">Source Port</label>
@@ -57,8 +57,12 @@
                     </div>
                     <div class="form-group mb-4">
                         <label for="fq_email">Ship</label>
-                        <input type="text" class="form-control btn-block" id="fq_phone" name="ship"
-                            placeholder="Enter Phone" required />
+                        <select class="form-control btn-block " id="ship" name="ship" required style="height: 60px;">
+                            <option value="" selected disabled>SELECT SHIP</option>
+                            {% for i in shipdrop %}
+                            <option class="text-black" value="{{ i.id }}">{{ i.name }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
                     <div class="form-group">
                         <input type="submit" class="btn btn-primary text-white py-2 px-4 btn-block" value="SUBMIT" />

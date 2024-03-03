@@ -3,7 +3,7 @@ from django.shortcuts import redirect
 from datetime import datetime, date, timedelta
 import datetime
 from django.views.decorators.cache import cache_control
-from .models import useradmin, Crew, Port, Ship
+from .models import useradmin, Crew, Port, Ship, Container
 from django.http import JsonResponse
 from django.http import HttpResponse, FileResponse, HttpResponseRedirect
 from django.contrib import messages
@@ -23,6 +23,21 @@ def home(request):
     return render(request,'Home/index.html')
 
 
+#====================================================================================
+#----------------------------------------Crew home----------------------------------------
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def crewHome(request):
+    today = datetime.datetime.now().date()
+    if 'id' in request.session:
+        id=request.session['id']
+        userType=request.session['userType']
+        if (Crew.objects.filter(id=id, role=userType)).exists():
+            dis = Crew.objects.get(id=id, role=userType)
+            ship = Ship.objects.get(id = dis.ship)
+            container = Container.objects.filter(ship = dis.ship)
+            return render(request, 'Crew/home.html', {'id': id, 'userDeatils': dis, 'userType' : dis.role, 'ship' : ship, 'container' : container})    
+    return render(request,'Crew/home.html')
+
 
 #====================================================================================
 #----------------------------------------signin page----------------------------------------
@@ -38,6 +53,13 @@ def signinPage(request):
             request.session['userType'] = dis.role
             messages.success(request, "Login Successfully")
             return redirect('home')
+        elif (Crew.objects.filter(email=useremail, password=password)).exists():
+            dis = Crew.objects.get(email=useremail, password=password)
+            request.session['id'] = dis.id
+            request.session['name'] = dis.name
+            request.session['userType'] = dis.role
+            messages.success(request, "Login Successfully")
+            return redirect('crewHome')
         else:
             msg = "wrong user name or password or account does not exist!!"
             messages.error(request, msg)
@@ -157,6 +179,17 @@ def portManager(request):
     return redirect('signinPage')
 
 
+#====================================================================================
+#----------------------------------------Container Manager----------------------------------------
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def containerManager(request):
+    if 'id' in request.session:
+        container = Container.objects.all()
+        ship = Ship.objects.all()
+        return render(request,'Container/containerManager.html',{'container' : container, 'ship' : ship})
+    return redirect('signinPage')
+
+
 
 #====================================================================================
 #----------------------------------------Add Ship----------------------------------------
@@ -186,12 +219,23 @@ def addShip(request):
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def addContainer(request):
     if 'id' in request.session:
+        shipdrop = Ship.objects.filter(status = 1)
         if request.method == 'POST':
-            name = request.POST.get("name")
-            phone = request.POST.get("phone")
-            messages.success(request, "New Ship Added")
-            return render(request,'Home/addContainer.html')
-        return render(request,'Home/addContainer.html')
+            number = request.POST.get("number")
+            source = request.POST.get("source")
+            destination = request.POST.get("destination")
+            ship = request.POST.get("ship")
+            ob = Container()
+            ob.containerNumber = number
+            ob.source = source
+            ob.destination = destination
+            ob.ship = ship
+            dis = useradmin.objects.get(id=request.session['id'], role=request.session['userType'])
+            ob.added_user = dis.id
+            ob.save()
+            messages.success(request, "New Container Added")
+            return render(request,'Home/addContainer.html', {'shipdrop' : shipdrop})
+        return render(request,'Home/addContainer.html', {'shipdrop' : shipdrop})
     return redirect('signinPage')
 
 
@@ -212,6 +256,21 @@ def crewStatusUpdate(request, id):
         return redirect('crewManager')
     return redirect('signinPage')
 
+
+#====================================================================================
+#----------------------------------------Container Status Update----------------------------------------
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def containerStatusUpdate(request, id):
+    if 'id' in request.session:
+        if request.method == 'POST':
+            messages.success(request, "Status Updated")
+            container = Container.objects.get(id = id)
+            if container.status == 1:
+                Container.objects.filter(id = id).update(status=0)
+            else:
+                Container.objects.filter(id = id).update(status=1)
+        return redirect('containerManager')
+    return redirect('signinPage')
 
 
 #====================================================================================

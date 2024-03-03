@@ -9,6 +9,7 @@ urlpatterns = [
     #------------------------------------------------------------------------------------------------------
     #home
     path('', home, name='home'),
+    path('crewHome', crewHome, name='crewHome'),
     path('signinPage', signinPage, name='signinPage'),
     path('signupPage', signupPage, name='signupPage'),
     path('addCrew', addCrew, name='addCrew'),
@@ -22,6 +23,8 @@ urlpatterns = [
     path('addContainer', addContainer, name='addContainer'),
     path('shipManager', shipManager, name='shipManager'),
     path('portManager', portManager, name='portManager'),
+    path('containerManager', containerManager, name='containerManager'),
     path('shipStatusUpdate/<id>', shipStatusUpdate, name='shipStatusUpdate'),
     path('portStatusUpdate/<id>', portStatusUpdate, name='portStatusUpdate'),
+    path('containerStatusUpdate/<id>', containerStatusUpdate, name='containerStatusUpdate'),
 ]

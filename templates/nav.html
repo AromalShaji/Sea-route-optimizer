@@ -59,6 +59,9 @@
                   <li class="">
                     <a href="{% url 'portManager' %}">Port Manager</a>
                   </li>
+                  <li class="">
+                    <a href="{% url 'containerManager' %}">Container Manager</a>
+                  </li>
                 </ul>
               </li>
 
@@ -84,7 +87,7 @@
                   </li>
                   {% else %}
                   <li class="">
-                    <a href="{% url 'signupPage' %}"><b>LOGIN</b></a>
+                    <a href="{% url 'signinPage' %}"><b>LOGIN</b></a>
                   </li>
                   {% endif %}
                 </ul>

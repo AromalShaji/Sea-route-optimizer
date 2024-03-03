@@ -59,8 +59,8 @@ class Container(models.Model):
     source = models.CharField(max_length=150, default='')
     destination = models.CharField(max_length=150, default='')
     ship = models.CharField(max_length=150, default='')
-    source_status = models.BooleanField(default='1')
-    destination_status = models.BooleanField(default='1')
+    collect_status = models.BooleanField(default='0')
+    drop_status = models.BooleanField(default='0')
     status = models.BooleanField(default='1')
     added_user = models.CharField(max_length=50, default='')
 
