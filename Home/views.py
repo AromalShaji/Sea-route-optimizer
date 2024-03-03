@@ -257,6 +257,51 @@ def crewStatusUpdate(request, id):
     return redirect('signinPage')
 
 
+
+#====================================================================================
+#----------------------------------------Container Collect  Status Update----------------------------------------
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def containerCollectStatusUpdate(request, id):
+    if 'id' in request.session:
+        if request.method == 'POST':
+            container = Container.objects.get(id = id)
+            if container.status == 1:
+                if container.drop_status == 0:
+                    if container.collect_status == 1:
+                        Container.objects.filter(id = id).update(collect_status=0)
+                        messages.success(request, "Status Updated")
+                    else:
+                        Container.objects.filter(id = id).update(collect_status=1)
+                        messages.success(request, "Status Updated")
+                else:
+                    messages.error(request, "Container is Already Droped")
+        return redirect('crewHome')
+    return redirect('signinPage')
+
+
+
+#====================================================================================
+#----------------------------------------Container Drop  Status Update----------------------------------------
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def containerDropStatusUpdate(request, id):
+    if 'id' in request.session:
+        if request.method == 'POST':
+            container = Container.objects.get(id = id)
+            if container.status == 1:
+                if container.collect_status == 1:
+                    if container.drop_status == 1:
+                        Container.objects.filter(id = id).update(drop_status=0)
+                        messages.success(request, "Status Updated")
+                    else:
+                        Container.objects.filter(id = id).update(drop_status=1)
+                        messages.success(request, "Status Updated")
+                else:
+                    messages.error(request, "Container is not collected")
+        return redirect('crewHome')
+    return redirect('signinPage')
+
+
+
 #====================================================================================
 #----------------------------------------Container Status Update----------------------------------------
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
