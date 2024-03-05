@@ -31,5 +31,6 @@ urlpatterns = [
     path('containerCollectStatusUpdate/<id>', containerCollectStatusUpdate, name='containerCollectStatusUpdate'),
     path('containerDropStatusUpdate/<id>', containerDropStatusUpdate, name='containerDropStatusUpdate'),
     path('crewProfilePage', crewProfilePage, name='crewProfilePage'),
+    path('shipRoute', shipRoute, name='shipRoute'),
 
 ]

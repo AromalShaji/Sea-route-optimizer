@@ -161,44 +161,6 @@
     </div>
 </div>
 
-<div class="site-section">
-
-</div>
-
-
-<div class="site-section bg-light">
-    <div class="container">
-        <div class="row justify-content-center mb-5">
-            <div class="col-md-7 text-center border-primary">
-                <h2 class="font-weight-light text-primary">ASSIGN SHIP PATH</h2>
-                <p class="color-black-opacity-5">Select the Ship from the List</p>
-            </div>
-        </div>
-        <form id="translateForm" class="translator-form mt-5" action="" method="post">
-            {% csrf_token %}
-            <div class="form-group mb-4">
-                <label for="fq_email">Ship</label>
-                <select class="form-control btn-block" id="ship" name="ship" required style="height: 60px;">
-                    <option value="" selected disabled>SELECT SHIP</option>
-                    {% for i in shipdrop %}
-                    <option value="{{ i.id }}">{{ i.name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="form-group mb-4">
-                <label for="fq_email">Source</label>
-                <input type="text" class="form-control btn-block" id="fq_phone" name="source" placeholder="SOURCE NAME"
-                    required />
-            </div>
-            <div class="form-group mb-4">
-                <label for="fq_email">Destination</label>
-                <input type="text" class="form-control btn-block" id="fq_phone" name="destination"
-                    placeholder="DESTINATION NAME" required />
-            </div>
-            <button type="submit" class="btn btn-success text-black py-2 px-4 btn-block">FIND OPTIMIZED ROUTE</button>
-        </form>
-    </div>
-</div>
 
 <div class="site-section">
 

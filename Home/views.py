@@ -10,6 +10,23 @@ from django.contrib import messages
 
 
 #====================================================================================
+#----------------------------------------ship route ----------------------------------------
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def shipRoute(request):
+    today = datetime.datetime.now().date()
+    if 'id' in request.session:
+        id=request.session['id']
+        userType=request.session['userType']
+        if (Ship.objects.filter(id=id, role=userType)).exists():
+            dis = Ship.objects.get(id=id, role=userType)
+            return render(request, 'Ship/route.html', {'id': id, 'userDeatils': dis, 'userType' : dis.role})    
+        return render(request,'Ship/route.html')
+    return render(request,'Crew/home.html')
+    
+    
+
+
+#====================================================================================
 #----------------------------------------home----------------------------------------
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def home(request):
@@ -22,7 +39,6 @@ def home(request):
             return render(request, 'Home/index.html', {'id': id, 'userDeatils': dis, 'userType' : dis.role})    
     return render(request,'Home/index.html')
     
-
 
 
 #====================================================================================
@@ -43,7 +59,6 @@ def crewHome(request):
 
 
 
-
 #====================================================================================
 #----------------------------------------Ship home----------------------------------------
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
@@ -59,7 +74,6 @@ def shipHome(request):
             return render(request, 'Ship/home.html', {'id': id, 'userDeatils': dis, 'userType' : dis.role, 'container' : container, 'crew' : crew})    
         return render(request,'Ship/home.html')
     return render(request,'signin.html')
-
 
 
 
