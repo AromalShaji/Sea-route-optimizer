@@ -21,6 +21,8 @@ def home(request):
             dis = useradmin.objects.get(id=id, role=userType)
             return render(request, 'Home/index.html', {'id': id, 'userDeatils': dis, 'userType' : dis.role})    
     return render(request,'Home/index.html')
+    
+
 
 
 #====================================================================================
@@ -36,7 +38,10 @@ def crewHome(request):
             ship = Ship.objects.get(id = dis.ship)
             container = Container.objects.filter(ship = dis.ship)
             return render(request, 'Crew/home.html', {'id': id, 'userDeatils': dis, 'userType' : dis.role, 'ship' : ship, 'container' : container})    
-    return render(request,'Crew/home.html')
+        return render(request,'Crew/home.html')
+    return render(request,'signin.html')
+
+
 
 
 #====================================================================================
@@ -52,7 +57,11 @@ def shipHome(request):
             container = Container.objects.filter(ship = dis.id)
             crew = Crew.objects.filter(ship = dis.id)
             return render(request, 'Ship/home.html', {'id': id, 'userDeatils': dis, 'userType' : dis.role, 'container' : container, 'crew' : crew})    
-    return render(request,'Ship/home.html')
+        return render(request,'Ship/home.html')
+    return render(request,'signin.html')
+
+
+
 
 #====================================================================================
 #----------------------------------------signin page----------------------------------------
@@ -95,6 +104,27 @@ def signinPage(request):
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def signupPage(request):
     return render(request,'signup.html')
+
+
+
+#====================================================================================
+#----------------------------------------crew profile----------------------------------------
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def crewProfilePage(request):
+    if 'id' in request.session:
+        if request.method == 'POST':
+            password = request.POST.get("password")
+            if(Crew.objects.filter(id=request.session['id'], role=request.session['userType'])).exists():
+                Crew.objects.filter(id=request.session['id'], role=request.session['userType']).update(password = password)
+                messages.success(request, "Profile Updated")
+                crew = Crew.objects.get(id=request.session['id'], role=request.session['userType'])
+                return render(request,'Crew/profile.html', {'crew' : crew})
+            crew = Crew.objects.get(id=request.session['id'], role=request.session['userType'])
+            messages.success(request, "Something went wrong!")
+            return render(request,'Crew/profile.html', {'crew' : crew})
+        crew = Crew.objects.get(id=request.session['id'], role=request.session['userType'])
+        return render(request,'Crew/profile.html', {'crew' : crew})
+    return redirect('signinPage')
 
 
 

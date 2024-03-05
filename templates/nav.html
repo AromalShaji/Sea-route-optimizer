@@ -64,8 +64,18 @@
                   </li>
                 </ul>
               </li>
+              {% endif %}
 
+              {% if request.session.userType == 'crew' %}
+              <li class="text-center rounded font-weight-bold">
+                <a href="{% url 'crewProfilePage' %}">PROFILE</a>
+              </li>
+              {% endif %}
 
+              {% if request.session.userType == 'ship' %}
+              <li class="has-children h6 has-children  text-center rounded font-weight-bold">
+                <a href="{% url 'crewProfilePage' %}">PROFILE</a>
+              </li>
               {% endif %}
 
 

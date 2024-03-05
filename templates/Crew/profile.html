@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content%}
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li class="{{ message.tags }}">
+        <span class="message-text {% if message.tags == 'error' %}error{% endif %}">{{ message }}</span>
+        <button class="close-btn">&times;</button>
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+<script>
+    const closeButtons = document.querySelectorAll('.close-btn');
+
+    closeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const message = button.parentElement;
+            message.remove();
+        });
+
+        setTimeout(() => {
+            const message = button.parentElement;
+            message.remove();
+        }, 5000);
+    });
+</script>
+<style>
+    .messages {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .messages li {
+        background-color: #5ed474;
+        border: 1px solid #88d24f;
+        border-radius: 4px;
+        color: #000000;
+        padding: 10px;
+        position: relative;
+        text-align: center;
+        /* Center the message */
+    }
+
+    .messages li.error {
+        background-color: #f44336;
+        /* Red background for error messages */
+        border-color: #d32f2f;
+        color: white;
+        /* White text for error messages */
+    }
+
+    .messages li .close-btn {
+        background: none;
+        border: none;
+        color: #000000;
+        cursor: pointer;
+        font-size: 1.2em;
+        padding: 0;
+        position: absolute;
+        right: 5px;
+        top: 5px;
+    }
+
+    .messages li .close-btn:hover {
+        color: #666;
+    }
+
+    .messages li .message-text {
+        display: inline-block;
+        max-width: 90%;
+    }
+</style>
+
+<style>
+    .form-control.no-border {
+        border: none;
+        border-radius: 0;
+        border-bottom: 1px solid #ced4da;
+    }
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+
+<div class="site-blocks-cover overlay" style="background-image: url(static/images/crew.jpg); background-size: cover;"
+    data-aos="fade" data-stellar-background-ratio="0.5">
+    <div class="container-lg"> <!-- Using container-lg for wider container -->
+        <div class="row justify-content-center">
+            <div class="col-md-10" data-aos="fade-up" data-aos-delay="400"> <!-- Adjusted column width to col-md-10 -->
+                <div class="free-quote bg-dark text-center p-5 mt-5">
+                    <h2 class="my-4 heading">
+                        <div class="col-md-6 mb-5">
+                            <a href="{% url 'crewHome' %}" class="btn btn-primary text-black btn-block" style="width: 50px;">
+                                <i class="fas fa fa-arrow-left"></i>
+                            </a>
+                        </div>
+                        PROFILE
+                    </h2>
+                    <form id="translateForm" class="translator-form mt-5" action="" method="post">
+                        {% csrf_token %}
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label for="name">Name</label>
+                                <input type="text" id="name" name="name" class="form-control mt-1 bg-dark rounded no-border"
+                                    placeholder="Name" required value="{{crew.name}}" disabled>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="email">Email</label>
+                                <input type="text" id="email" name="email" class="form-control mt-1 bg-dark rounded no-border"
+                                    placeholder="Email" required value="{{crew.email}}" disabled>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="phone">Phone</label>
+                                <input type="text" id="phone" name="phone" class="form-control mt-1 bg-dark rounded no-border"
+                                    placeholder="Phone" required value="{{crew.phone}}" disabled>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="mt-3">Password</label>
+                            <div class="input-group">
+                                <input type="password" id="password" name="password"
+                                    class="form-control mt-3 bg-dark text-whiterounded no-border password" placeholder="Enter Password"
+                                    required value="{{crew.password}}">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary toggle-password"
+                                        type="button">Show</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-warning text-black py-2 px-4 btn-block" value="Update" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // JavaScript to toggle password visibility
+    document.addEventListener("DOMContentLoaded", function () {
+        const togglePassword = document.querySelector('.toggle-password');
+        const passwordInput = document.getElementById('password');
+
+        togglePassword.addEventListener('click', function () {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.textContent = type === 'password' ? 'Show' : 'Hide';
+        });
+    });
+</script>
+
+
+{% endblock %}
