@@ -1,4 +1,3 @@
-
 {% extends 'base.html' %}
 {% load static %}
 
@@ -18,25 +17,31 @@
             {% csrf_token %}
             <div class="form-group mb-4">
                 <label for="fq_email">Ship</label>
-                <select class="form-control btn-block" id="ship" name="ship" required style="height: 60px;">
-                    <option value="" selected disabled>SELECT SHIP</option>
-                    {% for i in shipdrop %}
-                    <option value="{{ i.id }}">{{ i.name }}</option>
-                    {% endfor %}
-                </select>
+                <input type="text" class="form-control btn-block" id="fq_phone" name="ship" placeholder="SHIP NAME" value="{{userDeatils.name}}" required disabled/>
+            </div>
+            <div class="form-row mb-4">
+                <div class="form-group col-md-6">
+                    <label for="start_time">Start Time</label>
+                    <input type="time" class="form-control" id="start_time" name="start_time" required />
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="end_time">End Time</label>
+                    <input type="time" class="form-control" id="end_time" name="end_time" required />
+                </div>
             </div>
             <div class="form-group mb-4">
                 <label for="fq_email">Source</label>
-                <input type="text" class="form-control btn-block" id="fq_phone" name="source" placeholder="SOURCE NAME"
-                    required />
+                <input type="text" class="form-control btn-block" id="fq_phone" name="source" placeholder="SOURCE NAME" required />
+                <label for="fq_email" class="text-danger">* In Geographic coordinates</label>
             </div>
             <div class="form-group mb-4">
                 <label for="fq_email">Destination</label>
-                <input type="text" class="form-control btn-block" id="fq_phone" name="destination"
-                    placeholder="DESTINATION NAME" required />
+                <input type="text" class="form-control btn-block" id="fq_phone" name="destination" placeholder="DESTINATION NAME" required />
+                <label for="fq_email" class="text-danger">* In Geographic coordinates</label>
             </div>
             <button type="submit" class="btn btn-success text-black py-2 px-4 btn-block">FIND OPTIMIZED ROUTE</button>
         </form>
+        
     </div>
 </div>
 
