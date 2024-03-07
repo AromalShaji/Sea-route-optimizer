@@ -48,6 +48,7 @@
                     <th>SOURCE</th>
                     <th>DESTINATION</th>
                     <th>SHIP</th>
+                    <th>DATE</th>
                     <th>COLLECT STATUS</th>
                     <th>DROP STATUS</th>
                     <th>STATUS</th>
@@ -76,6 +77,16 @@
                             {{ j.name }}
                             {% endif %}
                             {% endfor %}
+                        </td>
+                        {% endif %}
+
+                        {% if not i.date %}
+                        <td class="text-danger py-2 px-4">
+                            NOT ASSIGNED
+                        </td>
+                        {% else %}
+                        <td class="text-success py-2 px-4">
+                            {{ i.date }}
                         </td>
                         {% endif %}
 
