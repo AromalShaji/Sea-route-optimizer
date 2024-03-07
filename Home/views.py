@@ -292,12 +292,14 @@ def addContainer(request):
         if request.method == 'POST':
             number = request.POST.get("number")
             source = request.POST.get("source")
+            date = request.POST.get("date")
             destination = request.POST.get("destination")
             ship = request.POST.get("ship")
             ob = Container()
             ob.containerNumber = number
             ob.source = source
             ob.destination = destination
+            ob.date = date
             ob.ship = ship
             dis = useradmin.objects.get(id=request.session['id'], role=request.session['userType'])
             ob.added_user = dis.id
@@ -420,6 +422,7 @@ def shipStatusUpdate(request, id):
     return redirect('signinPage')
 
 
+
 #====================================================================================
 #----------------------------------------Add Ship To Crew ----------------------------------------
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
@@ -428,24 +431,30 @@ def addShipToCrew(request):
         if request.method == 'POST':
             crew = request.POST.get("crew")
             ship = request.POST.get("ship")
-            Crew.objects.filter(id = crew, status = 1).update(ship = ship)
+            date = request.POST.get("date")
+            time = request.POST.get("time")
+            Crew.objects.filter(id = crew, status = 1).update(ship = ship, date = date, time = time)
             messages.success(request, "Updated")
         return redirect('crewManager')
     return redirect('signinPage')
 
 
+
 #====================================================================================
-#----------------------------------------Add Ship To Crew ----------------------------------------
+#----------------------------------------Add crew To ship ----------------------------------------
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def addCrewToShip(request):
     if 'id' in request.session:
         if request.method == 'POST':
             crew = request.POST.get("crew")
             ship = request.POST.get("ship")
-            Crew.objects.filter(id = crew, status = 1).update(ship = ship)
+            date = request.POST.get("date")
+            time = request.POST.get("time")
+            Crew.objects.filter(id = crew, status = 1).update(ship = ship, date = date, time = time)
             messages.success(request, "Updated")
         return redirect('shipManager')
     return redirect('signinPage')
+
 
 
 #====================================================================================
