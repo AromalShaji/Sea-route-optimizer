@@ -121,23 +121,4 @@
     </div>
   </div>
 </div>
-
-<script>
-  document.getElementById("password").addEventListener("input", function () {
-      var passwordInput = document.getElementById("password");
-      var passwordError = document.getElementById("passwordError");
-      var password = passwordInput.value;
-
-      // Regular expressions for special character and number
-      var specialCharacterRegex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
-      var numberRegex = /\d/;
-
-      // Check if password meets criteria
-      if (password.length < 8 || !specialCharacterRegex.test(password) || !numberRegex.test(password)) {
-          passwordError.style.display = "block";
-      } else {
-          passwordError.style.display = "none";
-      }
-  });
-</script>
 {% endblock %}
