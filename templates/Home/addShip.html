@@ -53,8 +53,12 @@
                     </div>
                     <div class="form-group mb-4">
                         <label for="fq_phone">Ship Password</label>
-                        <input type="text" class="form-control btn-block" id="fq_phone" name="password"
+                        <input type="password" class="form-control btn-block" id="fq_phone" name="password"
                             placeholder="Enter Password" required />
+                        <div id="passwordError" style="color: red; display: none">
+                            Password must be at least 8 characters long and contain at
+                            least one special character and one number
+                        </div>
                     </div>
                     <div class="form-group">
                         <input type="submit" class="btn btn-primary text-white py-2 px-4 btn-block" value="Register" />
@@ -67,6 +71,24 @@
     </div>
 </div>
 
+<script>
+    document.getElementById("password").addEventListener("input", function () {
+      var passwordInput = document.getElementById("password");
+      var passwordError = document.getElementById("passwordError");
+      var password = passwordInput.value;
+  
+      // Regular expressions for special character and number
+      var specialCharacterRegex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
+      var numberRegex = /\d/;
+  
+      // Check if password meets criteria
+      if (password.length < 8 || !specialCharacterRegex.test(password) || !numberRegex.test(password)) {
+        passwordError.style.display = "block";
+      } else {
+        passwordError.style.display = "none";
+      }
+    });
+  </script>
 <br>
 
 <script>

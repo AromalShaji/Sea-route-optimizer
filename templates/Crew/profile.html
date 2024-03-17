@@ -97,7 +97,8 @@
                 <div class="free-quote bg-dark text-center p-5 mt-5">
                     <h2 class="my-4 heading">
                         <div class="col-md-6 mb-5">
-                            <a href="{% url 'crewHome' %}" class="btn btn-primary text-black btn-block" style="width: 50px;">
+                            <a href="{% url 'crewHome' %}" class="btn btn-primary text-black btn-block"
+                                style="width: 50px;">
                                 <i class="fas fa fa-arrow-left"></i>
                             </a>
                         </div>
@@ -108,34 +109,42 @@
                         <div class="form-row">
                             <div class="form-group col-md-4">
                                 <label for="name">Name</label>
-                                <input type="text" id="name" name="name" class="form-control mt-1 bg-dark rounded no-border"
-                                    placeholder="Name" required value="{{crew.name}}" disabled>
+                                <input type="text" id="name" name="name"
+                                    class="form-control mt-1 bg-dark rounded no-border" placeholder="Name" required
+                                    value="{{crew.name}}" disabled>
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="email">Email</label>
-                                <input type="text" id="email" name="email" class="form-control mt-1 bg-dark rounded no-border"
-                                    placeholder="Email" required value="{{crew.email}}" disabled>
+                                <input type="text" id="email" name="email"
+                                    class="form-control mt-1 bg-dark rounded no-border" placeholder="Email" required
+                                    value="{{crew.email}}" disabled>
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="phone">Phone</label>
-                                <input type="text" id="phone" name="phone" class="form-control mt-1 bg-dark rounded no-border"
-                                    placeholder="Phone" required value="{{crew.phone}}" disabled>
+                                <input type="text" id="phone" name="phone"
+                                    class="form-control mt-1 bg-dark rounded no-border" placeholder="Phone" required
+                                    value="{{crew.phone}}" disabled>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="password" class="mt-3">Password</label>
                             <div class="input-group">
                                 <input type="password" id="password" name="password"
-                                    class="form-control mt-3 bg-dark text-whiterounded no-border password" placeholder="Enter Password"
-                                    required value="{{crew.password}}">
+                                    class="form-control mt-3 bg-dark text-whiterounded no-border password"
+                                    placeholder="Enter Password" required value="{{crew.password}}">
                                 <div class="input-group-append">
                                     <button class="btn btn-outline-secondary toggle-password"
                                         type="button">Show</button>
                                 </div>
                             </div>
+                            <div id="passwordError" style="color: red; display: none">
+                                Password must be at least 8 characters long and contain at
+                                least one special character and one number
+                            </div>
                         </div>
                         <div class="form-group">
-                            <input type="submit" class="btn btn-warning text-black py-2 px-4 btn-block" value="Update" />
+                            <input type="submit" class="btn btn-warning text-black py-2 px-4 btn-block"
+                                value="Update" />
                         </div>
                     </form>
                 </div>
@@ -144,6 +153,24 @@
     </div>
 </div>
 
+<script>
+    document.getElementById("password").addEventListener("input", function () {
+        var passwordInput = document.getElementById("password");
+        var passwordError = document.getElementById("passwordError");
+        var password = passwordInput.value;
+
+        // Regular expressions for special character and number
+        var specialCharacterRegex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
+        var numberRegex = /\d/;
+
+        // Check if password meets criteria
+        if (password.length < 8 || !specialCharacterRegex.test(password) || !numberRegex.test(password)) {
+            passwordError.style.display = "block";
+        } else {
+            passwordError.style.display = "none";
+        }
+    });
+</script>
 <script>
     // JavaScript to toggle password visibility
     document.addEventListener("DOMContentLoaded", function () {
