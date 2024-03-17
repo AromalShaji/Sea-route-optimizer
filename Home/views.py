@@ -51,7 +51,10 @@ def crewHome(request):
         userType=request.session['userType']
         if (Crew.objects.filter(id=id, role=userType)).exists():
             dis = Crew.objects.get(id=id, role=userType)
-            ship = Ship.objects.get(id = dis.ship)
+            if dis.ship:
+                ship = Ship.objects.get(id = dis.ship)
+            else:
+                ship = ""
             container = Container.objects.filter(ship = dis.ship)
             return render(request, 'Crew/home.html', {'id': id, 'userDeatils': dis, 'userType' : dis.role, 'ship' : ship, 'container' : container})    
         return render(request,'Crew/home.html')
