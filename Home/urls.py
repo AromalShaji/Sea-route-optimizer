@@ -18,6 +18,7 @@ urlpatterns = [
     path('addPort', addPort, name='addPort'),
     path('crewManager', crewManager, name='crewManager'),
     path('crewStatusUpdate/<id>', crewStatusUpdate, name='crewStatusUpdate'),
+    path('crewShipUpdate/<id>', crewShipUpdate, name='crewShipUpdate'),
     path('addShip', addShip, name='addShip'),
     path('addShipToCrew', addShipToCrew, name='addShipToCrew'),
     path('addCrewToShip', addCrewToShip, name='addCrewToShip'),
@@ -32,5 +33,7 @@ urlpatterns = [
     path('containerDropStatusUpdate/<id>', containerDropStatusUpdate, name='containerDropStatusUpdate'),
     path('crewProfilePage', crewProfilePage, name='crewProfilePage'),
     path('shipRoute', shipRoute, name='shipRoute'),
-
+    # path('predicted_route_details', predicted_route_details, name='predicted_route_details'),
+    path('optimize_route', optimize_route, name='optimize_route'),
+    path('generate_route', generate_route, name='generate_route'),
 ]

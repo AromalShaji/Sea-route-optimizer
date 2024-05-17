@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">Predicted Route Details</div>
+
+                <div class="card-body">
+                    <!-- Display the predicted route graph here -->
+                    <div id="predicted-route-graph">
+                        <!-- Placeholder for the graph -->
+                        <img src="data:image/png;base64,{{ plot_data }}" alt="Predicted Route">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<!-- Include any necessary scripts for displaying the graph here -->
+{% endblock %}

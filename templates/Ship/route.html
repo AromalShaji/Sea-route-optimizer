@@ -10,41 +10,60 @@
         <div class="row justify-content-center mb-5">
             <div class="col-md-7 text-center border-primary">
                 <h2 class="font-weight-light text-primary">ASSIGN SHIP PATH</h2>
-                <p class="color-black-opacity-5">Select the Ship from the List</p>
+                <p class="color-black-opacity-5">Route Optimize</p>
             </div>
         </div>
-        <form id="translateForm" class="translator-form mt-5" action="" method="post">
+        <form class="translator-form mt-5" action="{%url 'optimize_route' %}" method="post">
             {% csrf_token %}
             <div class="form-group mb-4">
-                <label for="fq_email">Ship</label>
-                <input type="text" class="form-control btn-block" id="fq_phone" name="ship" placeholder="SHIP NAME" value="{{userDeatils.name}}" required disabled/>
+                <label for="lon_st">Start Longitude:</label>
+                <input type="number" step=0.1 class="form-control btn-block" name="lon_st" placeholder="longitude" required>
             </div>
-            <div class="form-row mb-4">
-                <div class="form-group col-md-6">
-                    <label for="start_time">Start Time</label>
-                    <input type="time" class="form-control" id="start_time" name="start_time" required />
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="end_time">End Time</label>
-                    <input type="time" class="form-control" id="end_time" name="end_time" required />
-                </div>
-            </div>
-            <div class="form-group mb-4">
-                <label for="fq_email">Source</label>
-                <input type="text" class="form-control btn-block" id="fq_phone" name="source" placeholder="SOURCE NAME" required />
-                <label for="fq_email" class="text-danger">* In Geographic coordinates</label>
-            </div>
-            <div class="form-group mb-4">
-                <label for="fq_email">Destination</label>
-                <input type="text" class="form-control btn-block" id="fq_phone" name="destination" placeholder="DESTINATION NAME" required />
-                <label for="fq_email" class="text-danger">* In Geographic coordinates</label>
-            </div>
+            <label for="lat_st">Starting Latitude:</label>
+        <input type="number" id="lat_st" class="form-control btn-block" name="lat_st" step="0.1" required><br>
+
+        <label for="lon_de">Destination Longitude:</label>
+        <input type="number" id="lon_de" class="form-control btn-block" name="lon_de" step="0.1" required><br>
+
+        <label for="lat_de">Destination Latitude:</label>
+        <input type="number" id="lat_de" class="form-control btn-block" name="lat_de" step="0.1" required><br>
+
+        <label for="stTime">Start Time:</label>
+        <input type="text" id="stTime" class="form-control btn-block" name="stTime" required><br>
+
+        <label for="eTime">End Time:</label>
+        <input type="text" id="eTime" class="form-control btn-block" name="eTime" required><br>
+
+        <label for="generation_count">Number of Generations:</label>
+        <input type="number" id="generation_count" class="form-control btn-block" name="generation_count" required><br>
+
+        <label for="pop_size">Population Size:</label>
+        <input type="number" id="pop_size" class="form-control btn-block" name="pop_size" required><br>
+
+        <label for="offspring">Offspring:</label>
+        <input type="number" id="offspring" class="form-control btn-block" name="offspring" required><br>
+
+        <label for="lon_min">Minimum Longitude:</label>
+        <input type="number" id="lon_min" class="form-control btn-block" name="lon_min" step="0.1" required><br>
+
+        <label for="lon_max">Maximum Longitude:</label>
+        <input type="number" id="lon_max" class="form-control btn-block" name="lon_max" step="0.1" required><br>
+
+        <label for="lat_min">Minimum Latitude:</label>
+        <input type="number" id="lat_min" class="form-control btn-block" name="lat_min" step="0.1" required><br>
+
+        <label for="lat_max">Maximum Latitude:</label>
+        <input type="number" id="lat_max" class="form-control btn-block" name="lat_max" step="0.1" required><br>
+
+        <label for="draft">Ship Draft:</label>
+        <input type="number" id="draft" class="form-control btn-block" name="draft" step="0.1" required><br>
+
             <button type="submit" class="btn btn-success text-black py-2 px-4 btn-block">FIND OPTIMIZED ROUTE</button>
         </form>
         
     </div>
 </div>
- 
+
 
 
 <div class="site-section">

@@ -52,8 +52,8 @@
           </div>
           <div class="form-group mb-4">
             <label for="fq_email">Phone</label>
-            <input type="number" class="form-control btn-block" id="fq_phone" name="phone" placeholder="Enter Phone"
-              required />
+            <input type="tel" class="form-control btn-block" id="fq_phone" name="phone" placeholder="Enter Phone"
+            pattern="[0-9]{10}" required/>
           </div>
           <div class="form-group mb-4">
             <label for="fq_email">Password</label>
@@ -81,6 +81,7 @@
     var passwordInput = document.getElementById("password");
     var passwordError = document.getElementById("passwordError");
     var password = passwordInput.value;
+    var submitBtn = document.querySelector('input[type="submit"]');
 
     // Regular expressions for special character and number
     var specialCharacterRegex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
@@ -89,11 +90,14 @@
     // Check if password meets criteria
     if (password.length < 8 || !specialCharacterRegex.test(password) || !numberRegex.test(password)) {
       passwordError.style.display = "block";
+      submitBtn.disabled = true; // Disable the submit button
     } else {
       passwordError.style.display = "none";
+      submitBtn.disabled = false; // Enable the submit button
     }
   });
 </script>
+
 <br>
 <script>
   const closeButtons = document.querySelectorAll('.close-btn');

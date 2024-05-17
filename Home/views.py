@@ -3,10 +3,21 @@ from django.shortcuts import redirect
 from datetime import datetime, date, timedelta
 import datetime
 from django.views.decorators.cache import cache_control
-from .models import useradmin, Crew, Port, Ship, Container
+from .models import useradmin, Crew, Port, Ship, Container, RoutePrediction, RouteInput
 from django.http import JsonResponse
 from django.http import HttpResponse, FileResponse, HttpResponseRedirect
 from django.contrib import messages
+from skimage.graph import route_through_array
+import joblib
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.cm as cm
+from matplotlib.lines import Line2D
+import geopandas as gpd
+# from joblib import load
+from shapely.geometry import Point, LineString
+# model = load(r"C:\Users\user\main project\marengo\Marengo\Model\DTR_model.joblib")
+import random
 
 
 #====================================================================================
@@ -21,10 +32,182 @@ def shipRoute(request):
             dis = Ship.objects.get(id=id, role=userType)
             return render(request, 'Ship/route.html', {'id': id, 'userDeatils': dis, 'userType' : dis.role})    
         return render(request,'Ship/route.html')
-    return render(request,'Crew/home.html')
+    return render(request,'Ship/home.html')
     
-    
+def generate_route(start_point, end_point, start_time, end_time, lon_min, lon_max, lat_min, lat_max, draft, generation_count, pop_size, offspring):
+    def distance(point1, point2):
+        return np.sqrt((point1[0] - point2[0])**2 + (point1[1] - point2[1])**2)
 
+    population = [[random.uniform(lon_min, lon_max), random.uniform(lat_min, lat_max)] for _ in range(pop_size)]
+
+    for generation in range(generation_count):
+        fitness = [distance(start_point, route) + distance(route, end_point) for route in population]
+
+        parents = []
+        for _ in range(offspring):
+            tournament = random.sample(range(pop_size), 3)
+            winner = min(tournament, key=lambda x: fitness[x])
+            parents.append(population[winner])
+
+        offspring_list = []
+        for i in range(offspring):  # Corrected variable name to avoid conflict with the parameter name
+            parent1, parent2 = random.sample(parents, 2)
+            crossover_point = random.randint(0, len(parent1) - 1)
+            child = parent1[:crossover_point] + parent2[crossover_point:]
+            offspring_list.append(child)
+
+        population = sorted(population, key=lambda x: fitness[population.index(x)])
+        for i in range(offspring):
+            population[-(i+1)] = offspring_list[i]
+
+        for i in range(pop_size):
+            if random.random() < 0.1:
+                mutation_point = random.randint(0, len(population[i]) - 1)
+                population[i][mutation_point] += random.uniform(-1, 1)
+
+    return population
+
+
+def optimize_route(request):
+    if request.method == 'POST':
+         # Retrieve input data from the form
+        lon_st = float(request.POST['lon_st'])
+        lat_st = float(request.POST['lat_st'])
+        lon_de = float(request.POST['lon_de'])
+        lat_de = float(request.POST['lat_de'])
+        stTime = request.POST['stTime']
+        eTime = request.POST['eTime']
+        generation_count = int(request.POST['generation_count'])
+        pop_size = int(request.POST['pop_size'])
+        offspring = int(request.POST['offspring'])
+        lon_min = int(request.POST['lon_min'])
+        lon_max = int(request.POST['lon_max'])
+        lat_min = int(request.POST['lat_min'])
+        lat_max = int(request.POST['lat_max'])
+        draft = float(request.POST['draft'])
+
+
+# Save input data to the database
+        route_input = RouteInput.objects.create(
+            lon_st=lon_st, lat_st=lat_st, lon_de=lon_de, lat_de=lat_de,
+            stTime=stTime, eTime=eTime, generation_count=generation_count,
+            pop_size=pop_size, offspring=offspring, lon_min=lon_min,
+            lon_max=lon_max, lat_min=lat_min, lat_max=lat_max, draft=draft
+        )
+        
+        
+        # Extract input data from the RouteInput object
+        lon_st = route_input.lon_st
+        lat_st = route_input.lat_st
+        lon_de = route_input.lon_de
+        lat_de = route_input.lat_de
+        stTime = route_input.stTime
+        eTime = route_input.eTime
+        generation_count = route_input.generation_count
+        pop_size = route_input.pop_size
+        offspring = route_input.offspring
+        lon_min = route_input.lon_min
+        lon_max = route_input.lon_max
+        lat_min = route_input.lat_min
+        lat_max = route_input.lat_max
+        draft = route_input.draft
+        
+        # Define startpoint and endpoint
+        startpoint = (lon_st, lat_st)
+        endpoint = (lon_de, lat_de)
+
+        # Generate the sea route
+        route = generate_route(startpoint, endpoint, stTime, eTime, lon_min, lon_max, lat_min, lat_max, draft, generation_count, pop_size, offspring)
+
+
+        # Load the machine learning model
+        model_path = r"C:\Users\ciyak\Documents\GitHub\marengo\Marengo\Model\DTR_model.joblib"
+        # joblib.dump(model_path, model_path, protocol=2)
+        try:
+            model = joblib.load(model_path)
+        except Exception as e:
+            return HttpResponse(f"Error loading the model: {e}")
+
+        # # Perform prediction using the machine learning model
+        # input_data = [[route_input.lon_st, route_input.lat_st, route_input.lon_de,
+        #     route_input.lat_de, route_input.stTime, route_input.eTime,
+        #     route_input.generation_count, route_input.pop_size,
+        #     route_input.offspring, route_input.lon_min, route_input.lon_max,
+        #     route_input.lat_min, route_input.lat_max, route_input.draft]]  # Ensure input data is in correct format
+        # try:
+        #     predicted_route = model.predict(input_data)
+        # except Exception as e:
+        #     return HttpResponse(f"Error predicting route: {e}")
+
+
+# Placeholder data for visualization (as in the original code snippet)
+        timeGridsDisplay = np.random.rand(10, 10)
+        route_minfuelUSe_Display = np.random.rand(3, 10)
+        route_minTime_Display = np.random.rand(3, 10)
+
+        # Crop the world map with bounding points
+        world = gpd.read_file(gpd.datasets.get_path('naturalearth_lowres'))
+        world_cropped = world.cx[lon_min:lon_max, lat_min:lat_max]
+
+        # Plotting the cropped map with a colorful background
+        fig, ax = plt.subplots(figsize=(14, 7))
+        world_cropped.plot(ax=ax, column='pop_est', cmap='viridis')
+
+        # Plotting the sea route
+        if route:
+            route_line = LineString([Point(lon_st, lat_st)] + route + [Point(lon_de, lat_de)])
+            gpd.GeoSeries(route_line).plot(ax=ax, color='blue')
+
+        # Plotting the start and end points
+        ax.plot(startpoint[0], startpoint[1], 'k^', markersize=15)
+        ax.plot(endpoint[0], endpoint[1], 'k*', markersize=15)
+
+        # Plotting the scatter plots
+        im = ax.imshow(timeGridsDisplay, aspect='auto', vmin=np.min(timeGridsDisplay), cmap='viridis')
+        route_minTime_Display_transposed = route_minTime_Display.T
+        sc2 = ax.scatter(route_minfuelUSe_Display[0], route_minfuelUSe_Display[1], c=route_minfuelUSe_Display[2], cmap='YlGn', edgecolor='none')
+        sc1 = ax.scatter(route_minTime_Display_transposed[0], route_minTime_Display_transposed[1], c=route_minTime_Display_transposed[2], cmap='YlOrRd', edgecolor='none', label='fastest')
+
+        # Adding colorbar
+        fig.colorbar(im, ax=ax, orientation='horizontal', label='time per grid cell', shrink=0.8)
+
+        # Adding legend
+        custom_lines = [
+            Line2D([0], [0], color='blue', lw=4),
+            Line2D([0], [0], marker='^', color='k', markersize=10, linestyle='None'),
+            Line2D([0], [0], marker='*', color='k', markersize=10, linestyle='None'),
+        ]
+        ax.legend(custom_lines, ['sea route', 'start point', 'end point'], loc='upper right')
+
+        # Convert the plot to a HTML string
+        import io
+        buf = io.BytesIO()
+        plt.savefig(buf, format='png')
+        buf.seek(0)
+        import base64
+        plot_data = base64.b64encode(buf.read()).decode('utf-8')
+
+        # Close the plot
+        plt.close()
+
+        # Pass the visualization to the template for rendering
+        return render(request, 'Ship/predicted_route_details.html', {'plot_data': plot_data})
+
+    # Handle GET request if needed
+    return redirect('shipRoute')
+    #     # Redirect to a new page to display the predicted route
+    #     return render('predicted_route_details.html', {'predicted_route': predicted_route})
+
+    # # Handle GET request if needed
+    # return redirect('shipRoute')
+
+# def predicted_route_details(request):
+#     # Retrieve predicted route details from the database
+#     # Replace this with the actual code to retrieve data from your database
+#     route_predictions = RoutePrediction.objects.all()  # You may need to filter this queryset based on your requirements
+    
+#     # Pass the route predictions to the template
+#     return render(request, 'predicted_route_details.html', {'route_predictions': route_predictions})
 
 #====================================================================================
 #----------------------------------------home----------------------------------------
@@ -211,7 +394,7 @@ def addPort(request):
 def crewManager(request):
     if 'id' in request.session:
         crew = Crew.objects.all()
-        crewdrop = Crew.objects.filter(status = 1)
+        crewdrop = Crew.objects.filter(status = 1, ship = "")
         ship = Ship.objects.all()
         shipdrop = Ship.objects.filter(status = 1)
         return render(request,'Crew/crewManager.html',{'crew' : crew, 'ship' : ship, 'crewdrop' : crewdrop, 'shipdrop' : shipdrop})
@@ -225,7 +408,7 @@ def crewManager(request):
 def shipManager(request):
     if 'id' in request.session:
         crew = Crew.objects.all()
-        crewdrop = Crew.objects.filter(status = 1)
+        crewdrop = Crew.objects.filter(status = 1, ship = "")
         ship = Ship.objects.all()
         shipdrop = Ship.objects.filter(status = 1)
         ship_crew_counts = {}
@@ -333,6 +516,22 @@ def crewStatusUpdate(request, id):
 
 
 #====================================================================================
+#----------------------------------------Crew Ship Update----------------------------------------
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def crewShipUpdate(request, id):
+    if 'id' in request.session:
+        if request.method == 'POST':
+            messages.success(request, "Ship Removed")
+            crew = Crew.objects.get(id = id)
+            if Crew.objects.filter(id=id, ship__isnull=False).exists():
+                Crew.objects.filter(id=id).update(ship="")
+        return redirect('crewManager')
+    return redirect('signinPage')
+
+
+
+
+#====================================================================================
 #----------------------------------------Container Collect  Status Update----------------------------------------
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def containerCollectStatusUpdate(request, id):
@@ -364,15 +563,16 @@ def containerDropStatusUpdate(request, id):
             if container.status == 1:
                 if container.collect_status == 1:
                     if container.drop_status == 1:
-                        Container.objects.filter(id = id).update(drop_status=0)
+                        Container.objects.filter(id = id).update(drop_status=0, status=1)
                         messages.success(request, "Status Updated")
                     else:
-                        Container.objects.filter(id = id).update(drop_status=1)
+                        Container.objects.filter(id = id).update(drop_status=1, status=0)
                         messages.success(request, "Status Updated")
                 else:
                     messages.error(request, "Container is not collected")
         return redirect('crewHome')
     return redirect('signinPage')
+
 
 
 
@@ -434,9 +634,9 @@ def addShipToCrew(request):
         if request.method == 'POST':
             crew = request.POST.get("crew")
             ship = request.POST.get("ship")
-            date = request.POST.get("date")
-            time = request.POST.get("time")
-            Crew.objects.filter(id = crew, status = 1).update(ship = ship, date = date, time = time)
+            # date = request.POST.get("date")
+            # time = request.POST.get("time")
+            Crew.objects.filter(id = crew, status = 1).update(ship = ship)
             messages.success(request, "Updated")
         return redirect('crewManager')
     return redirect('signinPage')
@@ -451,9 +651,9 @@ def addCrewToShip(request):
         if request.method == 'POST':
             crew = request.POST.get("crew")
             ship = request.POST.get("ship")
-            date = request.POST.get("date")
-            time = request.POST.get("time")
-            Crew.objects.filter(id = crew, status = 1).update(ship = ship, date = date, time = time)
+            # date = request.POST.get("date")
+            # time = request.POST.get("time")
+            Crew.objects.filter(id = crew, status = 1).update(ship = ship)
             messages.success(request, "Updated")
         return redirect('shipManager')
     return redirect('signinPage')

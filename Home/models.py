@@ -20,11 +20,9 @@ class Crew(models.Model):
     email = models.CharField(max_length=50, default='')
     password = models.CharField(max_length=50)
     phone = models.CharField(max_length=15, default='')
-    date = models.DateField(null=True, blank=True)
-    time = models.TimeField(null=True, blank=True)
     status = models.BooleanField(default='1')
     role = models.CharField(max_length=100, default='crew')
-    ship =  models.CharField(max_length=50, default='')
+    ship = models.CharField(max_length=50, default='', null=True)
     added_user = models.CharField(max_length=50, default='')
 
     def __str__(self):
@@ -56,13 +54,22 @@ class Ship(models.Model):
 
     def __str__(self):
         return " Ship : " + self.name + " , Status : " + str(self.status)
+    
+class RoutePrediction(models.Model):
+    ship = models.ForeignKey(Ship, on_delete=models.CASCADE)
+    predicted_start_time = models.DateTimeField()
+    predicted_end_time = models.DateTimeField()
+    predicted_source = models.CharField(max_length=150)
+    predicted_destination = models.CharField(max_length=150)
+
+    def __str__(self):
+        return f"Route Prediction for {self.ship.name}"
 
 class Container(models.Model):
     containerNumber = models.CharField(max_length=100)
     source = models.CharField(max_length=150, default='')
     destination = models.CharField(max_length=150, default='')
     ship = models.CharField(max_length=150, default='')
-    date = models.DateField(null=True, blank=True)
     collect_status = models.BooleanField(default='0')
     drop_status = models.BooleanField(default='0')
     status = models.BooleanField(default='1')
@@ -70,3 +77,20 @@ class Container(models.Model):
 
     def __str__(self):
         return " Container Number : " + self.containerNumber + " , Ship : " + str(self.ship) + " , Status : " + str(self.status)
+
+
+class RouteInput(models.Model):
+    lon_st = models.FloatField()
+    lat_st = models.FloatField()
+    lon_de = models.FloatField()
+    lat_de = models.FloatField()
+    stTime = models.CharField(max_length=100)
+    eTime = models.CharField(max_length=100)
+    generation_count = models.IntegerField()
+    pop_size = models.IntegerField()
+    offspring = models.IntegerField()
+    lon_min = models.IntegerField()
+    lon_max = models.IntegerField()
+    lat_min = models.IntegerField()
+    lat_max = models.IntegerField()
+    draft = models.FloatField()

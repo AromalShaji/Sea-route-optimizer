@@ -5,7 +5,7 @@
 
 {% include 'nav.html' %}
 
-
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
 <div class="site-blocks-cover overlay" style="background-image: url(static/images/hero_bg_3.jpg);" data-aos="fade"
     data-stellar-background-ratio="0.5">
     <div class="container">
@@ -48,8 +48,6 @@
                     <th>EMAIL</th>
                     <th>PHONE</th>
                     <th>SHIP</th>
-                    <th>DATE</th>
-                    <th>TIME</th>
                     <th>STATUS</th>
                     <th></th>
                 </tr>
@@ -57,47 +55,29 @@
 
             <tbody>
                 {% for i in crew %}
-                <form id="translateForm" class="translator-form mt-5" action="{% url 'crewStatusUpdate' i.id %}"
-                    method="post">
-                    {% csrf_token %}
+                
                     <tr class="{% cycle 'odd-row' 'even-row' %}">
                         <td>{{i.name}}</td>
                         <td>{{i.email}}</td>
                         <td>{{i.phone}}</td>
 
-                        {% if not i.ship %}
-                        <td class="text-danger py-2 px-4">
-                            NOT ASSIGNED
-                        </td>
-                        {% else %}
-                        <td class="text-success py-2 px-4">
-                            {% for j in ship %}
-                            {% if i.ship == j.id|stringformat:"s" %}
-                            {{ j.name }}
+                        <form id="translateForm" class="translator-form mt-5" action="{% url 'crewShipUpdate' i.id %}"
+                        method="post">
+                        {% csrf_token %}
+                            {% if not i.ship %}
+                            <td class="text-danger py-2 px-4">
+                                NOT ASSIGNED
+                            </td>
+                            {% else %}
+                            <td class="text-success py-2 px-4">
+                                {% for j in ship %}
+                                {% if i.ship == j.id|stringformat:"s" %}
+                                <button class="btn btn-danger text-black py-2 px-4 btn-block" type="submit">{{ j.name }} <i class="bi bi-x bi-lg text-light"></i></button>
+                                {% endif %}
+                                {% endfor %}
+                            </td>
                             {% endif %}
-                            {% endfor %}
-                        </td>
-                        {% endif %}
-
-                        {% if not i.date %}
-                        <td class="text-danger py-2 px-4">
-                            NOT ASSIGNED
-                        </td>
-                        {% else %}
-                        <td class="text-success py-2 px-4">
-                            {{ i.date }}
-                        </td>
-                        {% endif %}
-
-                        {% if not i.time %}
-                        <td class="text-danger py-2 px-4">
-                            NOT ASSIGNED
-                        </td>
-                        {% else %}
-                        <td class="text-success py-2 px-4">
-                            {{ i.time }}
-                        </td>
-                        {% endif %}
+                        </form>
 
                         {% if i.status == 1 %}
                         <td class="text-success py-2">ACTIVE</td>
@@ -105,23 +85,24 @@
                         <td class="text-danger py-2">NOT ACTIVE</td>
                         {% endif %}
 
-                        {% if i.status == 1 %}
-                        <td>
-                            <button type="submit"
-                                class="btn btn-danger text-black py-2 px-4 btn-block">DEACTIVATE</button>
-                        </td>
-                        {% else %}
-                        <td>
-                            <button type="submit"
-                                class="btn btn-success text-black py-2 px-4 btn-block">ACTVATE</button>
-                        </td>
-                        {% endif %}
-
+                        <form id="translateForm" class="translator-form mt-5" action="{% url 'crewStatusUpdate' i.id %}"
+                        method="post">
+                        {% csrf_token %}
+                            {% if i.status == 1 %}
+                            <td>
+                                <button type="submit"
+                                    class="btn btn-danger text-black py-2 px-4 btn-block">DEACTIVATE</button>
+                            </td>
+                            {% else %}
+                            <td>
+                                <button type="submit"
+                                    class="btn btn-success text-black py-2 px-4 btn-block">ACTVATE</button>
+                            </td>
+                            {% endif %}
+                        </form>
 
                     </tr>
-                </form>
                 {% endfor %}
-                </form>
             </tbody>
         </table>
         <div class="form-group mt-5">
@@ -147,7 +128,7 @@
                 <p class="color-black-opacity-5">Select the Ship from the List</p>
             </div>
         </div>
-        <form id="translateForm" class="translator-form mt-5" action="{% url 'addShipToCrew' %}" method="post">
+        <form id="tra nslateForm" class="translator-form mt-5" action="{% url 'addShipToCrew' %}" method="post">
             {% csrf_token %}
             <div class="form-group mb-4">
                 <label for="fq_email">Crew</label>
@@ -166,16 +147,6 @@
                     <option value="{{ i.id }}">{{ i.name }}</option>
                     {% endfor %}
                 </select>
-            </div>
-            <div class="form-row mb-4">
-                <div class="form-group col-md-6">
-                    <label for="start_time">Date</label>
-                    <input type="date" class="form-control" id="date" name="date" required />
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="end_time">Time</label>
-                    <input type="time" class="form-control" id="time" name="time" required />
-                </div>
             </div>
             <button type="submit" class="btn btn-success text-black py-2 px-4 btn-block">UPDATE</button>
         </form>
